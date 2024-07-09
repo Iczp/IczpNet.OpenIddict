@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>IczpNet.OpenIddict</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.0" />
+    <ProjectReference Include="..\..\src\IczpNet.OpenIddict.EntityFrameworkCore\IczpNet.OpenIddict.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\IczpNet.OpenIddict.TestBase\IczpNet.OpenIddict.TestBase.csproj" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="7.3.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "IczpNet.OpenIddict": {
+      "path": "IczpNet.OpenIddict.abpmdl.json"
+    }
+  }
+}

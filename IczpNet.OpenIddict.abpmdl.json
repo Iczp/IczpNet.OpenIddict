@@ -1,0 +1,111 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "IczpNet.OpenIddict.Domain.Shared": {
+      "path": "src/IczpNet.OpenIddict.Domain.Shared/IczpNet.OpenIddict.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Domain": {
+      "path": "src/IczpNet.OpenIddict.Domain/IczpNet.OpenIddict.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Application.Contracts": {
+      "path": "src/IczpNet.OpenIddict.Application.Contracts/IczpNet.OpenIddict.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Application": {
+      "path": "src/IczpNet.OpenIddict.Application/IczpNet.OpenIddict.Application.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.EntityFrameworkCore": {
+      "path": "src/IczpNet.OpenIddict.EntityFrameworkCore/IczpNet.OpenIddict.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.MongoDB": {
+      "path": "src/IczpNet.OpenIddict.MongoDB/IczpNet.OpenIddict.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.HttpApi": {
+      "path": "src/IczpNet.OpenIddict.HttpApi/IczpNet.OpenIddict.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.HttpApi.Client": {
+      "path": "src/IczpNet.OpenIddict.HttpApi.Client/IczpNet.OpenIddict.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.TestBase": {
+      "path": "test/IczpNet.OpenIddict.TestBase/IczpNet.OpenIddict.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.EntityFrameworkCore.Tests": {
+      "path": "test/IczpNet.OpenIddict.EntityFrameworkCore.Tests/IczpNet.OpenIddict.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.MongoDB.Tests": {
+      "path": "test/IczpNet.OpenIddict.MongoDB.Tests/IczpNet.OpenIddict.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.Domain.Tests": {
+      "path": "test/IczpNet.OpenIddict.Domain.Tests/IczpNet.OpenIddict.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.Application.Tests": {
+      "path": "test/IczpNet.OpenIddict.Application.Tests/IczpNet.OpenIddict.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.HttpApi.Host": {
+      "path": "host/IczpNet.OpenIddict.HttpApi.Host/IczpNet.OpenIddict.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.Web": {
+      "path": "src/IczpNet.OpenIddict.Web/IczpNet.OpenIddict.Web.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/IczpNet.OpenIddict.HttpApi.Client.ConsoleTestApp/IczpNet.OpenIddict.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "IczpNet.OpenIddict.Web.Host": {
+      "path": "host/IczpNet.OpenIddict.Web.Host/IczpNet.OpenIddict.Web.Host.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.AuthServer": {
+      "path": "host/IczpNet.OpenIddict.AuthServer/IczpNet.OpenIddict.AuthServer.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.Host.Shared": {
+      "path": "host/IczpNet.OpenIddict.Host.Shared/IczpNet.OpenIddict.Host.Shared.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.Web.Unified": {
+      "path": "host/IczpNet.OpenIddict.Web.Unified/IczpNet.OpenIddict.Web.Unified.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.Blazor": {
+      "path": "src/IczpNet.OpenIddict.Blazor/IczpNet.OpenIddict.Blazor.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Blazor.Host": {
+      "path": "host/IczpNet.OpenIddict.Blazor.Host/IczpNet.OpenIddict.Blazor.Host.abppkg.json",
+      "folder": "host"
+    },
+    "IczpNet.OpenIddict.Blazor.Server": {
+      "path": "src/IczpNet.OpenIddict.Blazor.Server/IczpNet.OpenIddict.Blazor.Server.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Blazor.WebAssembly": {
+      "path": "src/IczpNet.OpenIddict.Blazor.WebAssembly/IczpNet.OpenIddict.Blazor.WebAssembly.abppkg.json",
+      "folder": "src"
+    },
+    "IczpNet.OpenIddict.Blazor.Server.Host": {
+      "path": "host/IczpNet.OpenIddict.Blazor.Server.Host/IczpNet.OpenIddict.Blazor.Server.Host.abppkg.json",
+      "folder": "host"
+    }
+  }
+}
