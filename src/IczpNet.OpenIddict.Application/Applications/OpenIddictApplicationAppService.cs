@@ -1,36 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 using OpenIddict.Abstractions;
-using Rctea.IM;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Json;
 using Volo.Abp.OpenIddict.Applications;
 
+namespace IczpNet.OpenIddict.Applications;
 
-
-
-public class CreateUpdateOpenIddictClientDto
-{
-    public string ClientId { get; set; }
-    public string DisplayName { get; set; }
-    public string ClientSecret { get; set; }
-    public List<string> GrantTypes { get; set; }
-    public List<string> Scopes { get; set; }
-    public string RedirectUri { get; set; }
-    public string PostLogoutRedirectUri { get; set; }
-}
-
-
-public class OpenIddictClientAppService : ApplicationService
+public class OpenIddictApplicationAppService : OpenIddictAppService
 {
     private readonly IAbpApplicationManager _applicationManager;
     private readonly IStringLocalizer<OpenIddictResponse> _localizer;
@@ -39,7 +22,7 @@ public class OpenIddictClientAppService : ApplicationService
     protected IOpenIddictApplicationStore<OpenIddictApplicationModel> AbpOpenIdApplicationStore => LazyServiceProvider.GetRequiredService<IOpenIddictApplicationStore<OpenIddictApplicationModel>>();
     protected IJsonSerializer JsonSerializer { get; set; }
 
-    public OpenIddictClientAppService(
+    public OpenIddictApplicationAppService(
         IAbpApplicationManager applicationManager,
         IStringLocalizer<OpenIddictResponse> localizer,
         IJsonSerializer jsonSerializer,
@@ -92,7 +75,7 @@ public class OpenIddictClientAppService : ApplicationService
         };
     }
 
-    public async Task<OpenIddictApplicationDto> CreateAsync(CreateUpdateOpenIddictClientDto input)
+    public async Task<OpenIddictApplicationDto> CreateAsync(ApplicationCreateUpdateInput input)
     {
         var applicationDescriptor = new OpenIddictApplicationDescriptor
         {
@@ -113,7 +96,7 @@ public class OpenIddictClientAppService : ApplicationService
         return ObjectMapper.Map<OpenIddictApplicationModel, OpenIddictApplicationDto>(application);
     }
 
-    public async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, CreateUpdateOpenIddictClientDto input)
+    public async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, ApplicationCreateUpdateInput input)
     {
         var application = await _applicationManager.FindByIdAsync(id.ToString());
         if (application == null)

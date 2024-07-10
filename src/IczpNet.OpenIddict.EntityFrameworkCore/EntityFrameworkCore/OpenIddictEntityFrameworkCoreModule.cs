@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using Volo.Abp.OpenIddict.EntityFrameworkCore;
 
 namespace IczpNet.OpenIddict.EntityFrameworkCore;
 
@@ -8,7 +9,8 @@ namespace IczpNet.OpenIddict.EntityFrameworkCore;
     typeof(OpenIddictDomainModule),
     typeof(AbpEntityFrameworkCoreModule)
 )]
-public class OpenIddictEntityFrameworkCoreModule : AbpModule
+[DependsOn(typeof(AbpOpenIddictEntityFrameworkCoreModule))]
+    public class OpenIddictEntityFrameworkCoreModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

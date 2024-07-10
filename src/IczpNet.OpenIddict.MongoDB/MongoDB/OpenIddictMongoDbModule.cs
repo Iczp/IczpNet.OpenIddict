@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Modularity;
 using Volo.Abp.MongoDB;
+using Volo.Abp.OpenIddict.MongoDB;
 
 namespace IczpNet.OpenIddict.MongoDB;
 
@@ -8,7 +9,8 @@ namespace IczpNet.OpenIddict.MongoDB;
     typeof(OpenIddictDomainModule),
     typeof(AbpMongoDbModule)
     )]
-public class OpenIddictMongoDbModule : AbpModule
+[DependsOn(typeof(AbpOpenIddictMongoDbModule))]
+    public class OpenIddictMongoDbModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

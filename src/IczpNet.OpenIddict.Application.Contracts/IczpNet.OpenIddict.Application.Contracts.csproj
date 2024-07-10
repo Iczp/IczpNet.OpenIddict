@@ -3,9 +3,25 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net7.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>netstandard2.1;net7.0</TargetFrameworks>
+    <Nullable>disable</Nullable>
     <RootNamespace>IczpNet.OpenIddict</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+    <NoWarn>$(NoWarn);CS1591;cs8766;cs8168</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <NoWarn>$(NoWarn);CS1591;cs8766;cs8168</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+    <NoWarn>$(NoWarn);CS1591;cs8766;cs8168</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <NoWarn>$(NoWarn);CS1591;cs8766;cs8168</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

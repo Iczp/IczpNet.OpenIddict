@@ -1,4 +1,4 @@
-﻿using Volo.Abp.Modularity;
+using Volo.Abp.Modularity;
 using Volo.Abp.Localization;
 using IczpNet.OpenIddict.Localization;
 using Volo.Abp.Domain;
@@ -6,6 +6,7 @@ using Volo.Abp.Localization.ExceptionHandling;
 using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.OpenIddict;
 
 namespace IczpNet.OpenIddict;
 
@@ -13,7 +14,8 @@ namespace IczpNet.OpenIddict;
     typeof(AbpValidationModule),
     typeof(AbpDddDomainSharedModule)
 )]
-public class OpenIddictDomainSharedModule : AbpModule
+[DependsOn(typeof(AbpOpenIddictDomainSharedModule))]
+    public class OpenIddictDomainSharedModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

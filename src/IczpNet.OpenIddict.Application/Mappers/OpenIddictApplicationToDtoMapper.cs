@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.Json;
 using System.Linq;
+using IczpNet.OpenIddict.Applications;
 
-namespace Rctea.IM.Mappers;
+namespace IczpNet.OpenIddict.Mappers;
 
 
 public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, OpenIddictApplicationDto>, ITransientDependency

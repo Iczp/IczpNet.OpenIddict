@@ -33,6 +33,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.AspNetCore.Mvc;
 
 namespace IczpNet.OpenIddict;
 
@@ -58,6 +59,16 @@ public class OpenIddictHttpApiHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        Configure<AbpAspNetCoreMvcOptions>(options =>
+        {
+            options
+                .ConventionalControllers
+                .Create(typeof(OpenIddictApplicationModule).Assembly, conf =>
+                {
+                    conf.RootPath = OpenIddictRemoteServiceConsts.RemoteServiceName.ToLower();
+                });
+        });
 
         Configure<AbpDbContextOptions>(options =>
         {
