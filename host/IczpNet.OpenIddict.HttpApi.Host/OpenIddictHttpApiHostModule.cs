@@ -34,6 +34,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IczpNet.OpenIddict;
 
@@ -67,7 +68,19 @@ public class OpenIddictHttpApiHostModule : AbpModule
                 .Create(typeof(OpenIddictApplicationModule).Assembly, conf =>
                 {
                     conf.RootPath = OpenIddictRemoteServiceConsts.RemoteServiceName.ToLower();
+                    // 将 Update 和 Delete 配置为 POST 请求
+                    //conf.ControllerModelConfigurer = x =>
+                    //{
+                    //    x.
+                    //    foreach (var action in x.Actions)
+                    //    {
+                    //        action.Attributes.Add(typeof(HttpPostAttribute));
+                    //    }
+
+                    //};
                 });
+
+
         });
 
         Configure<AbpDbContextOptions>(options =>

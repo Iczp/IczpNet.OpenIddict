@@ -9,6 +9,9 @@ public class OpenIddictPermissionDefinitionProvider : PermissionDefinitionProvid
     public override void Define(IPermissionDefinitionContext context)
     {
         var myGroup = context.AddGroup(OpenIddictPermissions.GroupName, L("Permission:OpenIddict"));
+
+        myGroup.AddPermissions<OpenIddictPermissions>(x => L($"Permission:{x}"));
+
     }
 
     private static LocalizableString L(string name)

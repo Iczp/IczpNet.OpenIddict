@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.Json;
 using System.Linq;
-using IczpNet.OpenIddict.Applications;
+using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Mappers;
 

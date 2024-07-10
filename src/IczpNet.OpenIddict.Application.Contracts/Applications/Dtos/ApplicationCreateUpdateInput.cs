@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace IczpNet.OpenIddict.Applications;
+namespace IczpNet.OpenIddict.Applications.Dtos;
 
 public class ApplicationCreateUpdateInput
 {

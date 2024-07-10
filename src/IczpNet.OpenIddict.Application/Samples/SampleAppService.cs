@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using IczpNet.OpenIddict.BaseAppServices;
 using Microsoft.AspNetCore.Authorization;
 
 namespace IczpNet.OpenIddict.Samples;

@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <RootNamespace>IczpNet.OpenIddict</RootNamespace>
   </PropertyGroup>
 

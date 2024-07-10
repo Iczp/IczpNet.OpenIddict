@@ -1,81 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using IczpNet.OpenIddict.Applications.Dtos;
+using IczpNet.OpenIddict.BaseAppServices;
+using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.OpenIddict.Permissions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 using OpenIddict.Abstractions;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Json;
 using Volo.Abp.OpenIddict.Applications;
-
 namespace IczpNet.OpenIddict.Applications;
 
-public class OpenIddictApplicationAppService : OpenIddictAppService
+public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, OpenIddictApplicationDto, OpenIddictApplicationDto, Guid, GetListInput, CreateInput, UpdateInput>, IApplicationAppService
 {
-    private readonly IAbpApplicationManager _applicationManager;
+
+
+    protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetList;
+    protected override string GetPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetItem;
+    protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Create;
+    protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Update;
+    protected override string DeletePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Delete;
+
+
+    protected IAbpApplicationManager ApplicationManager { get; set; }
+
     private readonly IStringLocalizer<OpenIddictResponse> _localizer;
 
     protected IOpenIddictApplicationRepository OpenIddictApplicationRepository { get; set; }
     protected IOpenIddictApplicationStore<OpenIddictApplicationModel> AbpOpenIdApplicationStore => LazyServiceProvider.GetRequiredService<IOpenIddictApplicationStore<OpenIddictApplicationModel>>();
     protected IJsonSerializer JsonSerializer { get; set; }
 
-    public OpenIddictApplicationAppService(
+    public ApplicationAppService(
+        IRepository<OpenIddictApplication, Guid> repository,
         IAbpApplicationManager applicationManager,
         IStringLocalizer<OpenIddictResponse> localizer,
         IJsonSerializer jsonSerializer,
-        IOpenIddictApplicationRepository openIddictApplicationRepository)
+        IOpenIddictApplicationRepository openIddictApplicationRepository) : base(repository)
     {
-        _applicationManager = applicationManager;
+        ApplicationManager = applicationManager;
         _localizer = localizer;
         JsonSerializer = jsonSerializer;
         OpenIddictApplicationRepository = openIddictApplicationRepository;
     }
 
-    public async Task<ListResultDto<OpenIddictApplicationDto>> GetListAsync()
-    {
-        var clients = await OpenIddictApplicationRepository.GetPagedListAsync(0, 100, null, true);
-
-        var clientDtos = MapToDto(clients);
-
-        return new ListResultDto<OpenIddictApplicationDto>(clientDtos);
-    }
-
-    protected virtual OpenIddictApplicationDto MapToDto(OpenIddictApplication entitiy)
-    {
-        return ObjectMapper.Map<OpenIddictApplication, OpenIddictApplicationDto>(entitiy);
-    }
-
-    protected virtual List<OpenIddictApplicationDto> MapToDto(List<OpenIddictApplication> entitiies)
-    {
-        return entitiies.Select(MapToDto).ToList();
-    }
-
-    public async Task<OpenIddictApplicationDto> GetAsync(Guid id)
-    {
-        var client = await _applicationManager.FindByIdAsync(id.ToString());
-        if (client == null)
-        {
-            throw new EntityNotFoundException(typeof(OpenIddictApplicationModel), id);
-        }
-
-        var application = client as OpenIddictApplicationModel;
-        return new OpenIddictApplicationDto
-        {
-            ClientId = application.ClientId,
-            DisplayName = application.DisplayName,
-            //ClientType = application.Type,
-            //ClientSecret = application.ClientSecret,
-            //GrantTypes = JsonConvert.DeserializeObject<List<string>>(application.Permissions).Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.GrantType)).ToList(),
-            //Scopes = JsonConvert.DeserializeObject<List<string>>(application.Permissions).Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope)).ToList(),
-            //RedirectUri = JsonConvert.DeserializeObject<List<string>>(application.RedirectUris).FirstOrDefault(),
-            //PostLogoutRedirectUri = JsonConvert.DeserializeObject<List<string>>(application.PostLogoutRedirectUris).FirstOrDefault()
-        };
-    }
-
-    public async Task<OpenIddictApplicationDto> CreateAsync(ApplicationCreateUpdateInput input)
+    public async Task<OpenIddictApplicationDto> Create1Async(ApplicationCreateUpdateInput input)
     {
         var applicationDescriptor = new OpenIddictApplicationDescriptor
         {
@@ -90,15 +61,15 @@ public class OpenIddictApplicationAppService : OpenIddictAppService
         };
 
         var application = new OpenIddictApplicationModel();
-        await _applicationManager.PopulateAsync(application, applicationDescriptor);
-        await _applicationManager.CreateAsync(application);
+        await ApplicationManager.PopulateAsync(application, applicationDescriptor);
+        await ApplicationManager.CreateAsync(application);
 
         return ObjectMapper.Map<OpenIddictApplicationModel, OpenIddictApplicationDto>(application);
     }
 
-    public async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, ApplicationCreateUpdateInput input)
+    public async Task<OpenIddictApplicationDto> Update1Async(Guid id, ApplicationCreateUpdateInput input)
     {
-        var application = await _applicationManager.FindByIdAsync(id.ToString());
+        var application = await ApplicationManager.FindByIdAsync(id.ToString());
         if (application == null)
         {
             throw new EntityNotFoundException(typeof(OpenIddictApplicationModel), id);
@@ -116,20 +87,25 @@ public class OpenIddictApplicationAppService : OpenIddictAppService
             //PostLogoutRedirectUris = new List<Uri> { new Uri(input.PostLogoutRedirectUri) }
         };
 
-        await _applicationManager.PopulateAsync(application, applicationDescriptor);
-        await _applicationManager.UpdateAsync(application);
+        await ApplicationManager.PopulateAsync(application, applicationDescriptor);
+        await ApplicationManager.UpdateAsync(application);
 
         return ObjectMapper.Map<OpenIddictApplicationModel, OpenIddictApplicationDto>(application as OpenIddictApplicationModel);
     }
 
-    public async Task DeleteAsync(Guid id)
+
+
+
+    
+
+    public async Task Delete1Async(Guid id)
     {
-        var application = await _applicationManager.FindByIdAsync(id.ToString());
+        var application = await ApplicationManager.FindByIdAsync(id.ToString());
         if (application == null)
         {
             throw new EntityNotFoundException(typeof(OpenIddictApplicationModel), id);
         }
 
-        await _applicationManager.DeleteAsync(application);
+        await ApplicationManager.DeleteAsync(application);
     }
 }
