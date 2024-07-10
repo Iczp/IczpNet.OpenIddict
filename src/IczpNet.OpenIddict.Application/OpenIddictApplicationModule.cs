@@ -2,6 +2,7 @@
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
+using IczpNet.AbpCommons;
 
 namespace IczpNet.OpenIddict;
 
@@ -11,6 +12,8 @@ namespace IczpNet.OpenIddict;
     typeof(AbpDddApplicationModule),
     typeof(AbpAutoMapperModule)
     )]
+
+[DependsOn(typeof(AbpCommonsApplicationModule))]
 public class OpenIddictApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)

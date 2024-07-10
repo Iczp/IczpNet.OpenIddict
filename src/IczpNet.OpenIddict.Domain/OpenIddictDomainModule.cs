@@ -1,3 +1,4 @@
+using IczpNet.AbpCommons;
 using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
@@ -10,8 +11,10 @@ namespace IczpNet.OpenIddict;
     typeof(OpenIddictDomainSharedModule)
 )]
 [DependsOn(typeof(AbpOpenIddictDomainModule))]
-    [DependsOn(typeof(AbpPermissionManagementDomainOpenIddictModule))]
-    public class OpenIddictDomainModule : AbpModule
+[DependsOn(typeof(AbpPermissionManagementDomainOpenIddictModule))]
+
+[DependsOn(typeof(AbpCommonsDomainModule))]
+public class OpenIddictDomainModule : AbpModule
 {
 
 }

@@ -175,12 +175,12 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         [NotNull] string type,
         [NotNull] string consentType,
         string displayName,
-        string? secret,
+        string secret,
         List<string> grantTypes,
         List<string> scopes,
-        string? redirectUri = null,
-        string? postLogoutRedirectUri = null,
-        List<string>? permissions = null)
+        string redirectUri = null,
+        string postLogoutRedirectUri = null,
+        List<string> permissions = null)
     {
         if (!string.IsNullOrEmpty(secret) && string.Equals(type, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
         {

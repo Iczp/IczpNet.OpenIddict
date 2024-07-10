@@ -25,6 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IczpNet.AbpCommons.Application.Contracts" Version="0.1.7" />
     <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="7.3.0" />
     <PackageReference Include="Volo.Abp.Authorization" Version="7.3.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Domain.Shared\IczpNet.OpenIddict.Domain.Shared.csproj" />
