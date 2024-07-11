@@ -35,6 +35,7 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.ExceptionHandling;
 
 namespace IczpNet.OpenIddict;
 
@@ -60,6 +61,12 @@ public class OpenIddictHttpApiHostModule : AbpModule
     {
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
+
+        Configure<AbpExceptionHandlingOptions>(options =>
+        {
+            options.SendExceptionsDetailsToClients = true;
+            options.SendStackTraceToClients = true;
+        });
 
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
@@ -211,6 +218,11 @@ public class OpenIddictHttpApiHostModule : AbpModule
         app.UseAbpSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
+
+            options.EnableDeepLinking();
+            options.EnableFilter();
+            options.EnableTryItOutByDefault();
+            options.EnablePersistAuthorization();
 
             var configuration = context.GetConfiguration();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);

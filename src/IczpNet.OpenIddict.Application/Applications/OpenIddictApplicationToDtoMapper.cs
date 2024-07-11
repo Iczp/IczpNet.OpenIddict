@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Linq;
 using IczpNet.OpenIddict.Applications.Dtos;
 
-namespace IczpNet.OpenIddict.Mappers;
+namespace IczpNet.OpenIddict.Applications;
 
 
 public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, OpenIddictApplicationDto>, ITransientDependency
@@ -21,6 +21,7 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
             return null;
         }
         using var document = JsonDocument.Parse(json);
+
         var builder = ImmutableArray.CreateBuilder<string>(document.RootElement.GetArrayLength());
 
         foreach (var element in document.RootElement.EnumerateArray())
@@ -54,8 +55,8 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
             Type = source.Type,
             ClientSecret = source.ClientSecret,
             Permissions = permissions,
-            GrantTypes = permissions.Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.GrantType)).ToList(),
-            Scopes = permissions.Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope)).ToList(),
+            GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
+            Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope),
             RedirectUris = ParseToList(source.RedirectUris),
             PostLogoutRedirectUris = ParseToList(source.PostLogoutRedirectUris),
             ConsentType = source.ConsentType,
@@ -66,6 +67,15 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
             LogoUri = source.LogoUri
         };
     }
+
+    private static List<string> GetPart(List<string> permissions, string prefixe)
+    {
+        return permissions
+            .Where(x => x.StartsWith(prefixe))
+            .Select(x => x[prefixe.Length..])
+            .ToList();
+    }
+
 
     public OpenIddictApplicationDto Map(OpenIddictApplication source, OpenIddictApplicationDto destination)
     {
@@ -82,8 +92,8 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
         destination.DisplayNames = source.DisplayNames;
         destination.Permissions = permissions;
         destination.Properties = source.Properties;
-        destination.GrantTypes = permissions.Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.GrantType)).ToList();
-        destination.Scopes = permissions.Where(p => p.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope)).ToList();
+        destination.GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType);
+        destination.Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope);
         destination.RedirectUris = ParseToList(source.RedirectUris);
         destination.PostLogoutRedirectUris = ParseToList(source.PostLogoutRedirectUris);
         destination.Requirements = ParseToList(source.Requirements);

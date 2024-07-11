@@ -39,16 +39,16 @@ public abstract class CrudOpenIddictAppService<TEntity, TGetOutputDto, TGetListO
     protected virtual async Task<PagedResultDto<TOuputDto>> GetPagedListAsync<T, TOuputDto>(
         IQueryable<T> query,
         PagedAndSortedResultRequestDto input,
-        Func<IQueryable<T>, IQueryable<T>>? queryableAction = null,
-        Func<List<T>, Task<List<T>>>? entityAction = null)
+        Func<IQueryable<T>, IQueryable<T>> queryableAction = null,
+        Func<List<T>, Task<List<T>>> entityAction = null)
     {
         return await query.ToPagedListAsync<T, TOuputDto>(AsyncExecuter, ObjectMapper, input, queryableAction, entityAction);
     }
     protected virtual async Task<PagedResultDto<T>> GetPagedListAsync<T>(
         IQueryable<T> query,
         PagedAndSortedResultRequestDto input,
-        Func<IQueryable<T>, IQueryable<T>>? queryableAction = null,
-        Func<List<T>, Task<List<T>>>? entityAction = null)
+        Func<IQueryable<T>, IQueryable<T>> queryableAction = null,
+        Func<List<T>, Task<List<T>>> entityAction = null)
     {
         return await GetPagedListAsync<T, T>(query, input, queryableAction, entityAction);
     }
