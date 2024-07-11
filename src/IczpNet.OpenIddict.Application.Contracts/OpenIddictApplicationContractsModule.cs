@@ -1,7 +1,8 @@
-﻿using Volo.Abp.Application;
+using Volo.Abp.Application;
 using Volo.Abp.Modularity;
 using Volo.Abp.Authorization;
 using IczpNet.AbpCommons;
+using Volo.Abp.FluentValidation;
 
 namespace IczpNet.OpenIddict;
 
@@ -11,7 +12,8 @@ namespace IczpNet.OpenIddict;
     typeof(AbpAuthorizationModule)
     )]
 [DependsOn(typeof(AbpCommonsApplicationContractsModule))]
-public class OpenIddictApplicationContractsModule : AbpModule
+[DependsOn(typeof(AbpFluentValidationModule))]
+    public class OpenIddictApplicationContractsModule : AbpModule
 {
 
 }

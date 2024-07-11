@@ -14,6 +14,12 @@ Add Moudule Volo.OpenIddict
 abp add-module Volo.OpenIddict
 ```
 
+#  FluentValidation 集成
+
+```bash
+abp add-package Volo.Abp.FluentValidation
+```
+
 
 
 ### Build

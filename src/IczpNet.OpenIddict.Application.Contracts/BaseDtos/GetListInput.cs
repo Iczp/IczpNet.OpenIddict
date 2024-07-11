@@ -10,7 +10,7 @@ public class GetListInput : PagedAndSortedResultRequestDto
     /// 关键字(支持拼音)
     /// </summary>
     [DefaultValue(null)]
-    public virtual string? Keyword { get; set; }
+    public virtual string Keyword { get; set; }
 
     /// <summary>
     /// 显示数量
@@ -29,5 +29,5 @@ public class GetListInput : PagedAndSortedResultRequestDto
     /// 排序
     /// </summary>
     [DefaultValue(null)]
-    public override string? Sorting { get; set; }
+    public override string Sorting { get; set; }
 }

@@ -17,9 +17,7 @@ using Microsoft.Extensions.Localization;
 using Volo.Abp.Localization;
 using Volo.Abp.DependencyInjection;
 using System.Threading;
-using System.Net.Sockets;
 using IczpNet.AbpCommons.Extensions;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace IczpNet.OpenIddict.Applications;
 
@@ -122,8 +120,6 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
        string postLogoutRedirectUri = null,
        List<string> permissions = null, CancellationToken cancellationToken = default)
     {
-
-
         Assert.If(string.IsNullOrEmpty(name), $"client_id  required");
 
         var client = await FindByClientIdAsync(name, cancellationToken);
@@ -165,11 +161,6 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         await UpdatePermissionAsync(descriptor.ClientId, permissions);
 
         return (await CreateAsync(descriptor, cancellationToken)).As<OpenIddictApplicationModel>();
-
-    }
-
-    private void SetDescriptor(OpenIddictApplicationDescriptor descriptor)
-    {
 
     }
 
@@ -365,6 +356,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         // 查找现有应用程序
         //var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
 
+        //Assert.If(name.Equals(applcation.ClientId), $"client_id cannot be modified");
+
         CheckSecret(type, secret);
 
         Check.NotNullOrEmpty(grantTypes, nameof(grantTypes));
@@ -381,6 +374,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         };
 
         applcation.Type = type;
+
         applcation.ConsentType = consentType;
         applcation.DisplayName = displayName;
 

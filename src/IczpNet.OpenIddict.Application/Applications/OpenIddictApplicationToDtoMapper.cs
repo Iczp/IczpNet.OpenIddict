@@ -64,7 +64,8 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
             Properties = source.Properties,
             Requirements = ParseToList(source.Requirements),
             ClientUri = source.ClientUri,
-            LogoUri = source.LogoUri
+            LogoUri = source.LogoUri,
+            CreationTime = source.CreationTime,
         };
     }
 
@@ -100,6 +101,7 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
         destination.Type = source.Type;
         destination.ClientUri = source.ClientUri;
         destination.LogoUri = source.LogoUri;
+        destination.CreationTime = source.CreationTime;
 
         return destination;
     }

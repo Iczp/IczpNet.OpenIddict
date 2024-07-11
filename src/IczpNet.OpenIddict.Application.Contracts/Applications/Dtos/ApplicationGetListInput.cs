@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using IczpNet.OpenIddict.BaseDtos;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace IczpNet.OpenIddict.Applications.Dtos;
 
-public class ApplicationUpdateInput
+public class ApplicationGetListInput : GetListInput
 {
     /// <summary>
     /// 
@@ -14,23 +16,18 @@ public class ApplicationUpdateInput
     /// <summary>
     /// 
     /// </summary>
-    [DefaultValue(null)] 
-    public string DisplayName { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
     [DefaultValue(null)]
-    public virtual string ClientSecret { get; set; }
+    public string DisplayName { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public virtual List<string> GrantTypes { get; set; }
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //public virtual List<string> GrantTypes { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public virtual List<string> Scopes { get; set; }
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //public virtual List<string> Scopes { get; set; }
 
     /// <summary>
     /// 
@@ -45,7 +42,7 @@ public class ApplicationUpdateInput
     /// <summary>
     /// 
     /// </summary>
-    [DefaultValue("public")]
+    [DefaultValue(null)]
     public virtual string ClientType { get; set; }
 
     /// <summary>
@@ -68,5 +65,20 @@ public class ApplicationUpdateInput
     /// <summary>
     /// 
     /// </summary>
-    public virtual List<string> Permissions { get; set; }
+    public virtual DateTime? StartCreationTime { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual DateTime? EndCreationTime { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual DateTime? StartLastModificationTime { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual DateTime? EndLastModificationTime { get; set; }
 }

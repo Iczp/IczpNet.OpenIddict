@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using IczpNet.AbpCommons;
+using IczpNet.AbpCommons.Extensions;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
 using IczpNet.OpenIddict.BaseDtos;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddict.Abstractions;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Applications;
+
 namespace IczpNet.OpenIddict.Applications;
 
-public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, OpenIddictApplicationDto, OpenIddictApplicationDto, Guid, GetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
+public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, OpenIddictApplicationDto, OpenIddictApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
 {
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetList;
@@ -29,6 +31,28 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         ApplicationManager = applicationManager;
     }
 
+
+    protected override async Task<IQueryable<OpenIddictApplication>> CreateFilteredQueryAsync(ApplicationGetListInput input)
+    {
+        var query = (await base.CreateFilteredQueryAsync(input))
+            .WhereIf(!input.ClientId.IsNullOrEmpty(), x => x.ClientId.Equals(input.ClientId))
+            .WhereIf(!input.ClientType.IsNullOrEmpty(), x => x.Type.Equals(input.ClientType))
+            .WhereIf(!input.ConsentType.IsNullOrEmpty(), x => x.ConsentType.Equals(input.ConsentType))
+            .WhereIf(!input.ClientUri.IsNullOrEmpty(), x => x.ClientUri.StartsWith(input.ClientUri))
+            .WhereIf(!input.DisplayName.IsNullOrEmpty(), x => x.DisplayName.StartsWith(input.DisplayName))
+            .WhereIf(!input.LogoUri.IsNullOrEmpty(), x => x.LogoUri.StartsWith(input.LogoUri))
+            .WhereIf(!input.RedirectUri.IsNullOrEmpty(), x => x.RedirectUris.Contains(input.RedirectUri))
+            .WhereIf(!input.PostLogoutRedirectUri.IsNullOrEmpty(), x => x.PostLogoutRedirectUris.Contains(input.PostLogoutRedirectUri))
+            .WhereIf(input.StartLastModificationTime.HasValue, x => x.LastModificationTime >= input.StartLastModificationTime)
+            .WhereIf(input.EndLastModificationTime.HasValue, x => x.LastModificationTime < input.EndLastModificationTime)
+            .WhereIf(input.StartCreationTime.HasValue, x => x.CreationTime >= input.StartCreationTime)
+            .WhereIf(input.EndCreationTime.HasValue, x => x.CreationTime < input.EndCreationTime)
+            .WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.ClientId.Contains(input.Keyword))
+            ;
+
+        return query;
+    }
+
     [HttpPost]
     public override async Task<OpenIddictApplicationDto> CreateAsync(ApplicationCreateInput input)
     {
@@ -38,7 +62,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
 
         var application = await ApplicationManager.CreateApplicationAsync(
              name: input.ClientId,
-             type: input.Type,
+             type: input.ClientType,
              consentType: input.ConsentType,
              displayName: input.DisplayName,
              secret: input.ClientSecret,
@@ -53,105 +77,67 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return await MapToGetOutputDtoAsync(entity);
     }
 
+    protected virtual async Task<OpenIddictApplicationModel> FindByClientIdAsync(string clientId)
+    {
+        return (await ApplicationManager.FindByClientIdAsync(clientId)).As<OpenIddictApplicationModel>();
+    }
+
     [HttpPost]
     public override async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
     {
-
         await CheckUpdatePolicyAsync(id, input);
 
         var application = (await ApplicationManager.FindByIdAsync(id.ToString())).As<OpenIddictApplicationModel>();
 
-        await ApplicationManager.UpdateApplicationAsync(application,
-               type: input.Type,
-               consentType: input.ConsentType,
-              displayName: input.DisplayName,
-              secret: input.ClientSecret,
-              grantTypes: input.GrantTypes,
-              scopes: input.Scopes,
-              redirectUri: input.RedirectUri,
-              postLogoutRedirectUri: input.PostLogoutRedirectUri
-              );
-
-        //Assert.If(!await ApplicationManager.ValidatePostLogoutRedirectUriAsync(application, input.PostLogoutRedirectUri), $"PostLogoutRedirectUri Failed:{input.PostLogoutRedirectUri}");
-
-        //Assert.If(!await ApplicationManager.ValidateRedirectUriAsync(application, input.RedirectUri), $"RedirectUri Failed:{input.RedirectUri}");
-
-
-        //var entity = await GetEntityByIdAsync(id);
-        //await CheckUpdateAsync(id, entity, input);
-        //await MapToEntityAsync(input, entity);
-        //await SetUpdateEntityAsync(entity, input);
-
-        //================
-
-
-        //var applicationDescriptor = new AbpApplicationDescriptor
-        //{
-        //    ClientId = input.ClientId,
-        //    ConsentType = input.ConsentType,
-        //    DisplayName = input.DisplayName,
-        //    //ClientSecret = input.ClientSecret,
-        //    Type = input.Type,
-        //    LogoUri = input.LogoUri,
-        //    ClientUri = input.ClientUri,
-        //};
-
-        //await ApplicationManager.PopulateAsync(application, applicationDescriptor);
-
-        //await ApplicationManager.SetClientSecretAsync(application, input.ClientSecret);
-
-        //await ApplicationManager.UpdateAsync(application);
+        await ApplicationManager.UpdateApplicationAsync(
+            application,
+            type: input.ClientType,
+            consentType: input.ConsentType,
+            displayName: input.DisplayName,
+            secret: input.ClientSecret,
+            grantTypes: input.GrantTypes,
+            scopes: input.Scopes,
+            redirectUri: input.RedirectUri,
+            postLogoutRedirectUri: input.PostLogoutRedirectUri,
+            permissions: input.Permissions
+            );
 
         var entity = await GetEntityByIdAsync(application.Id);
 
         return await MapToGetOutputDtoAsync(entity);
+    }
 
+    [HttpGet]
+    public virtual async Task<OpenIddictApplicationDto> GetByClientIdAsync(string cliendId)
+    {
+        await CheckGetPolicyAsync();
+
+        var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
+
+        return await GetAsync(app.Id);
     }
 
     [HttpPost]
-    public async Task<OpenIddictApplicationDto> Update1Async(Guid id, ApplicationUpdateInput input)
+    public virtual async Task DeleteByClientIdAsync(string cliendId)
     {
-        var application = await ApplicationManager.FindByIdAsync(id.ToString());
+        var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
 
-        Assert.If(application == null, $"EntityNotFound,id:{id}");
-
-        var applicationDescriptor = new OpenIddictApplicationDescriptor
-        {
-            ConsentType = OpenIddictConstants.ConsentTypes.Explicit,
-            DisplayName = input.DisplayName,
-            ClientSecret = input.ClientSecret,
-            Type = input.Type,
-
-            //Permissions = input.GrantTypes?.Select(gt => OpenIddictConstants.Permissions.Prefixes.GrantType + gt).Concat(
-            //              input.Scopes.Select(s => OpenIddictConstants.Permissions.Prefixes.Scope + s)).ToList(),
-            //RedirectUris = new List<Uri> { new Uri(input.RedirectUri) },
-            //PostLogoutRedirectUris = [new Uri(input.PostLogoutRedirectUri)]
-        };
-
-
-
-        await ApplicationManager.PopulateAsync(application, applicationDescriptor);
-        await ApplicationManager.UpdateAsync(application);
-
-        return ObjectMapper.Map<OpenIddictApplicationModel, OpenIddictApplicationDto>(application as OpenIddictApplicationModel);
+        await DeleteAsync(app.Id);
     }
 
-
-
-
-
-
-    public async Task Delete1Async(Guid id)
+    [HttpPost]
+    public virtual async Task DeleteManyByClientIdAsync(List<string> cliendIds)
     {
-        var application = await ApplicationManager.FindByIdAsync(id.ToString());
-        if (application == null)
+        Assert.If(!cliendIds.IsAny(), "cliendIds is null");
+
+        var idList = new List<Guid>();
+
+        foreach (var cliendId in cliendIds)
         {
-            throw new EntityNotFoundException(typeof(OpenIddictApplicationModel), id);
+            var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
+            idList.Add(app.Id);
         }
-
-        await ApplicationManager.DeleteAsync(application);
+        
+        await DeleteManyAsync(idList);
     }
-
-
-
 }
