@@ -3,41 +3,13 @@ using OpenIddict.Abstractions;
 using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.DependencyInjection;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text.Json;
 using System.Linq;
 using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Applications;
 
-
 public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, ApplicationDto>, ITransientDependency
 {
-
-    private static List<string> ParseToList(string json)
-    {
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return null;
-        }
-        using var document = JsonDocument.Parse(json);
-
-        var builder = ImmutableArray.CreateBuilder<string>(document.RootElement.GetArrayLength());
-
-        foreach (var element in document.RootElement.EnumerateArray())
-        {
-            var value = element.GetString();
-            if (string.IsNullOrEmpty(value))
-            {
-                continue;
-            }
-
-            builder.Add(value);
-        }
-
-        return [.. builder];
-    }
-
     public ApplicationDto Map(OpenIddictApplication source)
     {
         if (source == null)
@@ -45,7 +17,7 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
             return null;
         }
 
-        var permissions = ParseToList(source.Permissions) ?? [];
+        var permissions = Helper.ParseToList(source.Permissions) ?? [];
 
         return new ApplicationDto
         {
@@ -57,12 +29,12 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
             Permissions = permissions,
             GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
             Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope),
-            RedirectUris = ParseToList(source.RedirectUris),
-            PostLogoutRedirectUris = ParseToList(source.PostLogoutRedirectUris),
+            RedirectUris = Helper.ParseToList(source.RedirectUris),
+            PostLogoutRedirectUris = Helper.ParseToList(source.PostLogoutRedirectUris),
             ConsentType = source.ConsentType,
             DisplayNames = source.DisplayNames,
             Properties = source.Properties,
-            Requirements = ParseToList(source.Requirements),
+            Requirements = Helper.ParseToList(source.Requirements),
             ClientUri = source.ClientUri,
             LogoUri = source.LogoUri,
             CreationTime = source.CreationTime,
@@ -84,7 +56,7 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
         {
             return null;
         }
-        var permissions = ParseToList(source.Permissions) ?? [];
+        var permissions = Helper.ParseToList(source.Permissions) ?? [];
         destination.Id = source.Id;
         destination.ClientId = source.ClientId;
         destination.ClientSecret = source.ClientSecret;
@@ -95,9 +67,9 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
         destination.Properties = source.Properties;
         destination.GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType);
         destination.Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope);
-        destination.RedirectUris = ParseToList(source.RedirectUris);
-        destination.PostLogoutRedirectUris = ParseToList(source.PostLogoutRedirectUris);
-        destination.Requirements = ParseToList(source.Requirements);
+        destination.RedirectUris = Helper.ParseToList(source.RedirectUris);
+        destination.PostLogoutRedirectUris = Helper.ParseToList(source.PostLogoutRedirectUris);
+        destination.Requirements = Helper.ParseToList(source.Requirements);
         destination.Type = source.Type;
         destination.ClientUri = source.ClientUri;
         destination.LogoUri = source.LogoUri;

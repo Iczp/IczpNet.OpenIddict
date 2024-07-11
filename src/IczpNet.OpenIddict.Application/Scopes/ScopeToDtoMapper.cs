@@ -45,7 +45,7 @@ public class ScopeToDtoMapper : IObjectMapper<OpenIddictScope, ScopeDto>, ITrans
             return null;
         }
 
-        var resources = ParseToList(source.Resources) ?? [];
+        var resources = Helper.ParseToList(source.Resources) ?? [];
 
         return new ScopeDto
         {
@@ -76,7 +76,7 @@ public class ScopeToDtoMapper : IObjectMapper<OpenIddictScope, ScopeDto>, ITrans
         {
             return null;
         }
-        var permissions = ParseToList(source.Resources) ?? [];
+        var permissions = Helper.ParseToList(source.Resources) ?? [];
         destination.Id = source.Id;
         destination.Name = source.Name;
         destination.DisplayName = source.DisplayName;
