@@ -32,4 +32,8 @@
     <ProjectReference Include="..\IczpNet.OpenIddict.Domain.Shared\IczpNet.OpenIddict.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authorizations\" />
+  </ItemGroup>
+
 </Project>
