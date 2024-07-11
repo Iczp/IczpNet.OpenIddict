@@ -11,7 +11,7 @@ using IczpNet.OpenIddict.Applications.Dtos;
 namespace IczpNet.OpenIddict.Applications;
 
 
-public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, OpenIddictApplicationDto>, ITransientDependency
+public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, ApplicationDto>, ITransientDependency
 {
 
     private static List<string> ParseToList(string json)
@@ -38,7 +38,7 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
         return [.. builder];
     }
 
-    public OpenIddictApplicationDto Map(OpenIddictApplication source)
+    public ApplicationDto Map(OpenIddictApplication source)
     {
         if (source == null)
         {
@@ -47,7 +47,7 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
 
         var permissions = ParseToList(source.Permissions) ?? [];
 
-        return new OpenIddictApplicationDto
+        return new ApplicationDto
         {
             Id = source.Id,
             ClientId = source.ClientId,
@@ -78,7 +78,7 @@ public class OpenIddictApplicationToDtoMapper : IObjectMapper<OpenIddictApplicat
     }
 
 
-    public OpenIddictApplicationDto Map(OpenIddictApplication source, OpenIddictApplicationDto destination)
+    public ApplicationDto Map(OpenIddictApplication source, ApplicationDto destination)
     {
         if (source == null || destination == null)
         {

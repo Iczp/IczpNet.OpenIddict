@@ -108,7 +108,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         }
     }
 
-    public virtual async ValueTask<OpenIddictApplicationModel> CreateApplicationAsync(
+    public virtual async ValueTask<OpenIddictApplicationModel> CreateAsync(
        [NotNull] string name,
        [NotNull] string type,
        [NotNull] string consentType,
@@ -321,7 +321,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         return permissions;
     }
 
-    public virtual async ValueTask<OpenIddictApplicationModel> UpdateApplicationAsync(
+    public virtual async ValueTask<OpenIddictApplicationModel> UpdateAsync(
     [NotNull] Guid identifier,
     [NotNull] string type,
     [NotNull] string consentType,
@@ -336,11 +336,11 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     {
         var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
 
-        return await UpdateApplicationAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUri, postLogoutRedirectUri, permissions, cancellationToken);
+        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUri, postLogoutRedirectUri, permissions, cancellationToken);
     }
 
 
-    public virtual async ValueTask<OpenIddictApplicationModel> UpdateApplicationAsync(
+    public virtual async ValueTask<OpenIddictApplicationModel> UpdateAsync(
     OpenIddictApplicationModel applcation,
     [NotNull] string type,
     [NotNull] string consentType,

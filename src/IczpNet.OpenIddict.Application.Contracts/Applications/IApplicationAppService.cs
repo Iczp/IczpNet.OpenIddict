@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace IczpNet.OpenIddict.Applications;
 
-public interface IApplicationAppService :ICrudAbpCommonsAppService<OpenIddictApplicationDto, OpenIddictApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>
+public interface IApplicationAppService :ICrudAbpCommonsAppService<ApplicationDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>
 {
-    Task<OpenIddictApplicationDto> GetByClientIdAsync(string cliendId);
+    Task<ApplicationDto> GetByClientIdAsync(string cliendId);
 
     Task DeleteByClientIdAsync(string cliendId);
 

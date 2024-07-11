@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
+using Volo.Abp.ObjectExtending;
 
 namespace IczpNet.OpenIddict.Applications.Dtos;
 
-public class OpenIddictApplicationDto : IEntityDto<Guid>, IHasCreationTime
+public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
 {
 
     public Guid Id { get; set; }

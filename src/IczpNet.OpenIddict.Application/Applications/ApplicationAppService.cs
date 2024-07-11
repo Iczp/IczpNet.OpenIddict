@@ -14,7 +14,7 @@ using Volo.Abp.OpenIddict.Applications;
 
 namespace IczpNet.OpenIddict.Applications;
 
-public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, OpenIddictApplicationDto, OpenIddictApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
+public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, ApplicationDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
 {
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetList;
@@ -54,13 +54,13 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpPost]
-    public override async Task<OpenIddictApplicationDto> CreateAsync(ApplicationCreateInput input)
+    public override async Task<ApplicationDto> CreateAsync(ApplicationCreateInput input)
     {
         await CheckCreatePolicyAsync(input);
 
         await CheckCreateAsync(input);
 
-        var application = await ApplicationManager.CreateApplicationAsync(
+        var application = await ApplicationManager.CreateAsync(
              name: input.ClientId,
              type: input.ClientType,
              consentType: input.ConsentType,
@@ -83,13 +83,13 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpPost]
-    public override async Task<OpenIddictApplicationDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
+    public override async Task<ApplicationDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
     {
         await CheckUpdatePolicyAsync(id, input);
 
         var application = (await ApplicationManager.FindByIdAsync(id.ToString())).As<OpenIddictApplicationModel>();
 
-        await ApplicationManager.UpdateApplicationAsync(
+        await ApplicationManager.UpdateAsync(
             application,
             type: input.ClientType,
             consentType: input.ConsentType,
@@ -108,13 +108,18 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpGet]
-    public virtual async Task<OpenIddictApplicationDto> GetByClientIdAsync(string cliendId)
+    public virtual async Task<ApplicationDto> GetByClientIdAsync(string cliendId)
     {
         await CheckGetPolicyAsync();
 
         var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
 
         return await GetAsync(app.Id);
+    }
+
+    protected override async Task DeleteByIdAsync(Guid id)
+    {
+        await ApplicationManager.DeleteAsync(await ApplicationManager.FindByIdAsync(id.ToString()));
     }
 
     [HttpPost]
@@ -137,7 +142,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
             idList.Add(app.Id);
         }
-        
+
         await DeleteManyAsync(idList);
     }
 }

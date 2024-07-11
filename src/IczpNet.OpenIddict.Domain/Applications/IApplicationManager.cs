@@ -13,7 +13,7 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
 
     Task<string> SetClientSecretAsync(OpenIddictApplicationModel application, string secret, CancellationToken cancellationToken = default);
 
-    ValueTask<OpenIddictApplicationModel> CreateApplicationAsync(
+    ValueTask<OpenIddictApplicationModel> CreateAsync(
        [NotNull] string name,
        [NotNull] string type,
        [NotNull] string consentType,
@@ -25,7 +25,7 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
        string postLogoutRedirectUri = null,
        List<string> permissions = null, CancellationToken cancellationToken = default);
 
-    ValueTask<OpenIddictApplicationModel> UpdateApplicationAsync(
+    ValueTask<OpenIddictApplicationModel> UpdateAsync(
     [NotNull] Guid identifier,
     [NotNull] string type,
     [NotNull] string consentType,
@@ -37,7 +37,8 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
     string postLogoutRedirectUri = null,
     List<string> permissions = null,
     CancellationToken cancellationToken = default);
-    ValueTask<OpenIddictApplicationModel> UpdateApplicationAsync(
+
+    ValueTask<OpenIddictApplicationModel> UpdateAsync(
     OpenIddictApplicationModel applcation,
     [NotNull] string type,
     [NotNull] string consentType,
