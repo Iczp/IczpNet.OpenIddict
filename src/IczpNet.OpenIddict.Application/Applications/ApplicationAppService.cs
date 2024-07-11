@@ -6,7 +6,6 @@ using IczpNet.AbpCommons;
 using IczpNet.AbpCommons.Extensions;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
-using IczpNet.OpenIddict.BaseDtos;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.Domain.Repositories;
@@ -108,11 +107,11 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpGet]
-    public virtual async Task<ApplicationDto> GetByClientIdAsync(string cliendId)
+    public virtual async Task<ApplicationDto> GetByClientIdAsync(string clientId)
     {
         await CheckGetPolicyAsync();
 
-        var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
+        var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
 
         return await GetAsync(app.Id);
     }
@@ -123,9 +122,9 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpPost]
-    public virtual async Task DeleteByClientIdAsync(string cliendId)
+    public virtual async Task DeleteByClientIdAsync(string clientId)
     {
-        var app = Assert.NotNull(await FindByClientIdAsync(cliendId), $"No such application,clientId:{cliendId}");
+        var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
 
         await DeleteAsync(app.Id);
     }

@@ -10,6 +10,7 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Scopes;
 using IczpNet.AbpCommons;
 using IczpNet.AbpCommons.Extensions;
+using System.ComponentModel.DataAnnotations;
 
 namespace IczpNet.OpenIddict.Scopes;
 
@@ -69,8 +70,8 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDt
         return await base.UpdateAsync(id, input);
     }
 
-    [HttpPost]
-    public async Task<ScopeDto> GetByNameAsync(string name)
+    [HttpGet]
+    public async Task<ScopeDto> GetByNameAsync([Required] string name)
     {
         await CheckGetPolicyAsync();
 

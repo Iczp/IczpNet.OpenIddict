@@ -9,9 +9,9 @@ namespace IczpNet.OpenIddict.Applications;
 
 public interface IApplicationAppService :ICrudAbpCommonsAppService<ApplicationDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>
 {
-    Task<ApplicationDto> GetByClientIdAsync(string cliendId);
+    Task<ApplicationDto> GetByClientIdAsync(string clientId);
 
-    Task DeleteByClientIdAsync(string cliendId);
+    Task DeleteByClientIdAsync(string clientId);
 
     Task DeleteManyByClientIdAsync(List<string> cliendIds);
 }
