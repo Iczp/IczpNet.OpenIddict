@@ -1,4 +1,5 @@
-﻿using IczpNet.OpenIddict.Localization;
+﻿using IczpNet.AbpCommons.Permissions;
+using IczpNet.OpenIddict.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
