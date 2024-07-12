@@ -10,6 +10,8 @@ using Volo.Abp.OpenIddict.Tokens;
 using Volo.Abp.Application.Dtos;
 using IczpNet.OpenIddict.BaseDtos;
 using Volo.Abp;
+using Volo.Abp.Localization;
+using Volo.Abp.Reflection;
 
 namespace IczpNet.OpenIddict.Tokens;
 
@@ -18,8 +20,8 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetList;
     protected override string GetPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetItem;
-    protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.Create;
-    protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.Update;
+    //protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.Create;
+    //protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.Update;
     protected override string DeletePolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.Delete;
     protected virtual string GetStatusListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetStatusList;
     protected virtual string GetTypeListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetTypeList;

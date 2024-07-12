@@ -45,11 +45,11 @@ public class OpenIddictPermissions
         public const string GetItem = Default + "." + nameof(GetItem);
         public const string GetList = Default + "." + nameof(GetList);
         public const string Delete = Default + "." + nameof(Delete);
-        public const string Update = Default + "." + nameof(Update);
-        public const string Create = Default + "." + nameof(Create);
+        //public const string Update = Default + "." + nameof(Update);
+        //public const string Create = Default + "." + nameof(Create);
         public const string GetStatusList = Default + "." + nameof(GetStatusList);
         public const string GetTypeList = Default + "." + nameof(GetTypeList);
-        public const string GetApplicationId = Default + "." + nameof(GetApplicationId);
+        public const string GetApplicationIdList = Default + "." + nameof(GetApplicationIdList);
     }
 
     public class AuthorizationPermissions
@@ -58,7 +58,7 @@ public class OpenIddictPermissions
         public const string GetItem = Default + "." + nameof(GetItem);
         public const string GetList = Default + "." + nameof(GetList);
         public const string Delete = Default + "." + nameof(Delete);
-        public const string Update = Default + "." + nameof(Update);
-        public const string Create = Default + "." + nameof(Create);
+        //public const string Update = Default + "." + nameof(Update);
+        //public const string Create = Default + "." + nameof(Create);
     }
 }

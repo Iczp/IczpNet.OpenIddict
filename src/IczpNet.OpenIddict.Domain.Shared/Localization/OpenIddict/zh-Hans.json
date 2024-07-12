@@ -2,6 +2,41 @@
   "culture": "zh-Hans",
   "texts": {
     "MyAccount": "我的账户",
-    "SamplePageMessage": "OpenIddict模块的示例页面"
+    "SamplePageMessage": "OpenIddict模块的示例页面",
+
+
+
+    "Permission:OpenIddict": "OpenIddict",
+
+    "Permission:OpenIddict.ApplicationPermissions": "应用管理",
+    "Permission:OpenIddict.ApplicationPermissions.GetItem": "查看",
+    "Permission:OpenIddict.ApplicationPermissions.GetList": "列表",
+    "Permission:OpenIddict.ApplicationPermissions.Delete": "删除",
+    "Permission:OpenIddict.ApplicationPermissions.Update": "修改",
+    "Permission:OpenIddict.ApplicationPermissions.Create": "新建",
+    "Permission:OpenIddict.ApplicationPermissions.GetTypeList": "应用类型列表",
+    "Permission:OpenIddict.ApplicationPermissions.GetConsentTypeList": "许可类型列表",
+    "Permission:OpenIddict.ApplicationPermissions.GetSecret": "查看密钥",
+
+    "Permission:OpenIddict.ScopePermissions": "作用域(范围)",
+    "Permission:OpenIddict.ScopePermissions.GetItem": "查看",
+    "Permission:OpenIddict.ScopePermissions.GetList": "列表",
+    "Permission:OpenIddict.ScopePermissions.Delete": "删除",
+    "Permission:OpenIddict.ScopePermissions.Update": "修改",
+    "Permission:OpenIddict.ScopePermissions.Create": "新建",
+
+    "Permission:OpenIddict.TokenPermissions": "Token",
+    "Permission:OpenIddict.TokenPermissions.GetItem": "查看",
+    "Permission:OpenIddict.TokenPermissions.GetList": "列表",
+    "Permission:OpenIddict.TokenPermissions.Delete": "删除",
+    "Permission:OpenIddict.TokenPermissions.GetStatusList": "状态列表",
+    "Permission:OpenIddict.TokenPermissions.GetTypeList": "应用类型列表",
+    "Permission:OpenIddict.TokenPermissions.GetApplicationIdList": "AppId列表",
+
+    "Permission:OpenIddict.AuthorizationPermissions": "授权",
+    "Permission:OpenIddict.AuthorizationPermissions.GetItem": "查看",
+    "Permission:OpenIddict.AuthorizationPermissions.GetList": "列表",
+    "Permission:OpenIddict.AuthorizationPermissions.Delete": "删除"
+
   }
 }

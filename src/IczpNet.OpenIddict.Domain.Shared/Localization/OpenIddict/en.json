@@ -1,7 +1,42 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the OpenIddict module"
+    "MyAccount": "My account",
+    "SamplePageMessage": "A sample page for the OpenIddict module",
+
+    "Permission:OpenIddict.ApplicationPermissions": "OpenIddict",
+    "Permission:OpenIddict.ApplicationPermissions.GetItem": "GetItem",
+    "Permission:OpenIddict.ApplicationPermissions.GetList": "GetList",
+    "Permission:OpenIddict.ApplicationPermissions.Delete": "Delete",
+    "Permission:OpenIddict.ApplicationPermissions.Update": "Update",
+    "Permission:OpenIddict.ApplicationPermissions.Create": "Create",
+    "Permission:OpenIddict.ApplicationPermissions.GetTypeList": "Type List",
+    "Permission:OpenIddict.ApplicationPermissions.GetConsentTypeList": "Consent Type List",
+    "Permission:OpenIddict.ApplicationPermissions.GetSecret": "Get Secret",
+
+    "Permission:OpenIddict.ScopePermissions": "Scope",
+    "Permission:OpenIddict.ScopePermissions.GetItem": "GetItem",
+    "Permission:OpenIddict.ScopePermissions.GetList": "GetList",
+    "Permission:OpenIddict.ScopePermissions.Delete": "Delete",
+    "Permission:OpenIddict.ScopePermissions.Update": "Update",
+    "Permission:OpenIddict.ScopePermissions.Create": "Create",
+
+    "Permission:OpenIddict.TokenPermissions": "TokenPermissions",
+    "Permission:OpenIddict.TokenPermissions.GetItem": "GetItem",
+    "Permission:OpenIddict.TokenPermissions.GetList": "GetList",
+    "Permission:OpenIddict.TokenPermissions.Delete": "Delete",
+    "Permission:OpenIddict.TokenPermissions.Update": "Update",
+    "Permission:OpenIddict.TokenPermissions.Create": "Create",
+    "Permission:OpenIddict.TokenPermissions.GetStatusList": "Status List",
+    "Permission:OpenIddict.TokenPermissions.GetTypeList": "Type List",
+    "Permission:OpenIddict.TokenPermissions.GetApplicationIdList": "ApplicationId List",
+
+
+    "Permission:OpenIddict.AuthorizationPermissions": "Authorization",
+    "Permission:OpenIddict.AuthorizationPermissions.GetItem": ".GetItem",
+    "Permission:OpenIddict.AuthorizationPermissions.GetList": "GetList",
+    "Permission:OpenIddict.AuthorizationPermissions.Delete": "Delete",
+    "Permission:OpenIddict.AuthorizationPermissions.Update": "Update",
+    "Permission:OpenIddict.AuthorizationPermissions.Create": "Create"
   }
 }

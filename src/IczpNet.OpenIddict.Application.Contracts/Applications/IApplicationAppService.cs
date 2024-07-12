@@ -1,8 +1,11 @@
 ﻿using IczpNet.AbpCommons;
 using IczpNet.OpenIddict.Applications.Dtos;
+using IczpNet.OpenIddict.Authorizations.Dtos;
+using IczpNet.OpenIddict.BaseDtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Volo.Abp.Application.Dtos;
 
 namespace IczpNet.OpenIddict.Applications;
 
@@ -14,7 +17,12 @@ public interface IApplicationAppService :ICrudAbpCommonsAppService<ApplicationDe
 
     Task DeleteManyByClientIdAsync(List<string> cliendIds);
 
+    Task<PagedResultDto<KeyValueDto<string>>> GetTypeListAsync(ApplicationTypeGetListInput input);
+
+    Task<PagedResultDto<KeyValueDto<string>>> GetConsentTypeListAsync(ApplicationConsentTypeGetListInput input);
+
     Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId);
 
     Task<ApplicationSecretDto> GetSecretAsync(Guid id);
+
 }

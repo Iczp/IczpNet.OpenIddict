@@ -17,11 +17,11 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.GetList;
     protected override string GetPolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.GetItem;
-    protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.Create;
-    protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.Update;
+    //protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.Create;
+    //protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.Update;
     protected override string DeletePolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.Delete;
     protected virtual string GetStatusListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetStatusList;
-    protected virtual string GetApplicationIdListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetApplicationId;
+    protected virtual string GetApplicationIdListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetApplicationIdList;
 
     protected IAuthorizationManager AuthorizationManager { get; set; }
 
@@ -65,7 +65,7 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public virtual async Task<PagedResultDto<KeyValueDto<Guid?>>> GetApplicationIdListAsync(AuthorizationStatusGetListInput input)
+    public virtual async Task<PagedResultDto<KeyValueDto<Guid?>>> GetApplicationIdListAsync(AuthorizationApplicationIdGetListInput input)
     {
         return await GetEntityGroupListAsync(
             q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Status.StartsWith(input.Keyword)),

@@ -1,24 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="..\..\common.props" />
+	<Import Project="..\..\common.props" />
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>disable</Nullable>
-        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-        <RootNamespace>IczpNet.OpenIddict</RootNamespace>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+		<RootNamespace>IczpNet.OpenIddict</RootNamespace>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Authors>IczpNet</Authors>
+		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
+		<Version>0.1.1</Version>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Description>copyright (c) www.iczp.net </Description>
 
-    <ItemGroup>
-        <PackageReference Include="Volo.Abp.VirtualFileSystem" Version="7.3.0" />
-    </ItemGroup>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <None Remove="..\..\IczpNet.OpenIddict.abpmdl.json" />
-      <Content Include="..\..\IczpNet.OpenIddict.abpmdl.json">
-        <Pack>true</Pack>
-        <PackagePath>content\</PackagePath>
-      </Content>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.VirtualFileSystem" Version="7.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="..\..\IczpNet.OpenIddict.abpmdl.json" />
+		<Content Include="..\..\IczpNet.OpenIddict.abpmdl.json">
+			<Pack>true</Pack>
+			<PackagePath>content\</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\README.md" Link="README.md">
+	    <PackagePath>\</PackagePath>
+	    <Pack>True</Pack>
+	  </None>
+	</ItemGroup>
 
 </Project>
