@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Volo.Abp.Auditing;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.ObjectExtending;
+using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Tokens.Dtos;
 
@@ -18,6 +19,8 @@ public class TokenDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
     // 摘要:
     //     Gets or sets the application associated with the current token.
     public virtual Guid? ApplicationId { get; set; }
+
+    public virtual ApplicationSimpleDto Application { get; set; }
 
     //
     // 摘要:

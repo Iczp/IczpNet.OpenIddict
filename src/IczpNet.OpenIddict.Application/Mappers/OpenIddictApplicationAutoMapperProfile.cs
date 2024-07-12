@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IczpNet.OpenIddict.Applications;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Tokens.Dtos;
 using Volo.Abp.OpenIddict.Applications;
@@ -19,8 +20,12 @@ public class OpenIddictApplicationAutoMapperProfile : Profile
         CreateMap<OpenIddictApplication, ApplicationSecretDto>();
 
 
-        CreateMap<OpenIddictToken, TokenDto>().MapExtraProperties();
+        CreateMap<OpenIddictToken, TokenDto>()
+            .ForMember(x => x.Application, opt => opt.MapFrom<ApplicationResolver>())
+            .MapExtraProperties();
 
-        CreateMap<OpenIddictToken, TokenDetailDto>().MapExtraProperties();
+        CreateMap<OpenIddictToken, TokenDetailDto>()
+            .ForMember(x => x.Application, opt => opt.MapFrom<ApplicationResolver>())
+            .MapExtraProperties();
     }
 }
