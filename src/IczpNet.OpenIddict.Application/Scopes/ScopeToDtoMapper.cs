@@ -1,19 +1,16 @@
 ﻿using Volo.Abp.ObjectMapping;
-using OpenIddict.Abstractions;
 using Volo.Abp.OpenIddict.Scopes;
 using Volo.Abp.DependencyInjection;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text.Json;
 using System.Linq;
 using IczpNet.OpenIddict.Scopes.Dtos;
 
 namespace IczpNet.OpenIddict.Scopes;
 
 
-public class ScopeToDtoMapper : IObjectMapper<OpenIddictScope, ScopeDto>, ITransientDependency
+public class ScopeToDtoMapper<T> : IObjectMapper<OpenIddictScope, T>, ITransientDependency where T : ScopeDto, new()
 {
-    public ScopeDto Map(OpenIddictScope source)
+    public virtual T Map(OpenIddictScope source)
     {
         if (source == null)
         {
@@ -22,7 +19,7 @@ public class ScopeToDtoMapper : IObjectMapper<OpenIddictScope, ScopeDto>, ITrans
 
         var resources = Helper.ParseToList(source.Resources) ?? [];
 
-        return new ScopeDto
+        return new T
         {
             Id = source.Id,
             Name = source.Name,
@@ -45,7 +42,7 @@ public class ScopeToDtoMapper : IObjectMapper<OpenIddictScope, ScopeDto>, ITrans
     }
 
 
-    public ScopeDto Map(OpenIddictScope source, ScopeDto destination)
+    public virtual T Map(OpenIddictScope source, T destination)
     {
         if (source == null || destination == null)
         {

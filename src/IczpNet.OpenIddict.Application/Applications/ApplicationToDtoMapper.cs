@@ -8,9 +8,9 @@ using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Applications;
 
-public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, ApplicationDto>, ITransientDependency
+public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>, ITransientDependency where T : ApplicationDto, new()
 {
-    public ApplicationDto Map(OpenIddictApplication source)
+    public virtual T Map(OpenIddictApplication source)
     {
         if (source == null)
         {
@@ -19,13 +19,13 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
 
         var permissions = Helper.ParseToList(source.Permissions) ?? [];
 
-        return new ApplicationDto
+        return new T()
         {
             Id = source.Id,
             ClientId = source.ClientId,
             DisplayName = source.DisplayName,
             Type = source.Type,
-            ClientSecret = source.ClientSecret,
+            //ClientSecret = source.ClientSecret,
             Permissions = permissions,
             GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
             Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope),
@@ -50,7 +50,7 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
     }
 
 
-    public ApplicationDto Map(OpenIddictApplication source, ApplicationDto destination)
+    public virtual T Map(OpenIddictApplication source, T destination)
     {
         if (source == null || destination == null)
         {
@@ -59,7 +59,7 @@ public class ApplicationToDtoMapper : IObjectMapper<OpenIddictApplication, Appli
         var permissions = Helper.ParseToList(source.Permissions) ?? [];
         destination.Id = source.Id;
         destination.ClientId = source.ClientId;
-        destination.ClientSecret = source.ClientSecret;
+        //destination.ClientSecret = source.ClientSecret;
         destination.ConsentType = source.ConsentType;
         destination.DisplayName = source.DisplayName;
         destination.DisplayNames = source.DisplayNames;

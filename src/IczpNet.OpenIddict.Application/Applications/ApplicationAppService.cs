@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using IczpNet.AbpCommons;
 using IczpNet.AbpCommons.Extensions;
 using IczpNet.OpenIddict.Applications.Dtos;
+using IczpNet.OpenIddict.Authorizations.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
+using IczpNet.OpenIddict.BaseDtos;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Applications;
 
 namespace IczpNet.OpenIddict.Applications;
 
-public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, ApplicationDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
+public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, ApplicationDetailDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
 {
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetList;
@@ -21,6 +24,11 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     protected override string CreatePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Create;
     protected override string UpdatePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Update;
     protected override string DeletePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Delete;
+    protected virtual string GetTypeListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetTypeList;
+    protected virtual string GetConsentTypeListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetConsentTypeList;
+    protected virtual string GetSecretPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetSecret;
+
+
     protected IApplicationManager ApplicationManager { get; set; }
 
     public ApplicationAppService(
@@ -53,7 +61,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpPost]
-    public override async Task<ApplicationDto> CreateAsync(ApplicationCreateInput input)
+    public override async Task<ApplicationDetailDto> CreateAsync(ApplicationCreateInput input)
     {
         await CheckCreatePolicyAsync(input);
 
@@ -82,7 +90,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     }
 
     [HttpPost]
-    public override async Task<ApplicationDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
+    public override async Task<ApplicationDetailDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
     {
         await CheckUpdatePolicyAsync(id, input);
 
@@ -143,5 +151,45 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         }
 
         await DeleteManyAsync(idList);
+    }
+
+    /// <summary>
+    /// Authorization Type List
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public virtual async Task<PagedResultDto<KeyValueDto<string>>> GetTypeListAsync(ApplicationTypeGetListInput input)
+    {
+        return await GetEntityGroupListAsync(
+            q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Type.StartsWith(input.Keyword)),
+            input, GetTypeListPolicyName, x => x.Type);
+    }
+
+    /// <summary>
+    /// Authorization ConsentType List
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public virtual async Task<PagedResultDto<KeyValueDto<string>>> GetConsentTypeListAsync(ApplicationConsentTypeGetListInput input)
+    {
+        return await GetEntityGroupListAsync(
+            q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.ConsentType.StartsWith(input.Keyword)),
+            input, GetConsentTypeListPolicyName, x => x.ConsentType);
+    }
+
+    public async Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId)
+    {
+        var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
+
+        return await GetSecretAsync(app.Id);
+    }
+
+    public async Task<ApplicationSecretDto> GetSecretAsync(Guid id)
+    {
+        await CheckPolicyAsync(GetSecretPolicyName);
+
+        var entity = await GetEntityByIdAsync(id);
+
+        return ObjectMapper.Map<OpenIddictApplication, ApplicationSecretDto>(entity);
     }
 }

@@ -17,32 +17,8 @@ public class TokenGetListInput : GetListInput
     //     Gets or sets the authorization associated with the current token.
     public virtual Guid? AuthorizationId { get; set; }
 
-    //
-    // 摘要:
-    //     Gets or sets the UTC creation date of the current token.
-    public virtual DateTime? CreationDate { get; set; }
 
-    //
-    // 摘要:
-    //     Gets or sets the UTC expiration date of the current token.
-    public virtual DateTime? ExpirationDate { get; set; }
-
-    //
-    // 摘要:
-    //     Gets or sets the payload of the current token, if applicable. Note: this property
-    //     is only used for reference tokens and may be encrypted for security reasons.
-    public virtual string Payload { get; set; }
-
-    //
-    // 摘要:
-    //     Gets or sets the additional properties serialized as a JSON object, or null if
-    //     no bag was associated with the current token.
-    public virtual string Properties { get; set; }
-
-    //
-    // 摘要:
-    //     Gets or sets the UTC redemption date of the current token.
-    public virtual DateTime? RedemptionDate { get; set; }
+    
 
     //
     // 摘要:
@@ -65,6 +41,36 @@ public class TokenGetListInput : GetListInput
     // 摘要:
     //     Gets or sets the type of the current token.
     public virtual string Type { get; set; }
+
+    /// <summary>
+    /// Start CreationDate
+    /// </summary>
+    public virtual DateTime? StartCreationDate { get; set; }
+
+    /// <summary>
+    /// End CreationDate
+    /// </summary>
+    public virtual DateTime? EndCreationDate { get; set; }
+
+    /// <summary>
+    /// public virtual DateTime? ExpirationDate { get; set; }
+    /// </summary>
+    public virtual DateTime? StartExpirationDate { get; set; }
+
+    /// <summary>
+    /// EndExpirationDate
+    /// </summary>
+    public virtual DateTime? EndExpirationDate { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual DateTime? StartRedemptionDate { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual DateTime? EndRedemptionDate { get; set; }
 
     /// <summary>
     /// 

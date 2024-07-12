@@ -21,6 +21,9 @@ public class OpenIddictPermissions
         public const string Delete = Default + "." + nameof(Delete);
         public const string Update = Default + "." + nameof(Update);
         public const string Create = Default + "." + nameof(Create);
+        public const string GetTypeList = Default + "." + nameof(GetTypeList);
+        public const string GetConsentTypeList = Default + "." + nameof(GetConsentTypeList);
+        public const string GetSecret = Default + "." + nameof(GetSecret);
     }
 
 
@@ -44,6 +47,9 @@ public class OpenIddictPermissions
         public const string Delete = Default + "." + nameof(Delete);
         public const string Update = Default + "." + nameof(Update);
         public const string Create = Default + "." + nameof(Create);
+        public const string GetStatusList = Default + "." + nameof(GetStatusList);
+        public const string GetTypeList = Default + "." + nameof(GetTypeList);
+        public const string GetApplicationId = Default + "." + nameof(GetApplicationId);
     }
 
     public class AuthorizationPermissions

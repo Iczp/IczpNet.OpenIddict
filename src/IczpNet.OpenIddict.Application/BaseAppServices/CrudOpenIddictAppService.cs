@@ -64,6 +64,7 @@ public abstract class CrudOpenIddictAppService<TEntity, TGetOutputDto, TGetListO
                 Key = x.Key,
                 Count = x.Count()
             })
+            
             ;
 
         return await GetPagedListAsync(query, input);

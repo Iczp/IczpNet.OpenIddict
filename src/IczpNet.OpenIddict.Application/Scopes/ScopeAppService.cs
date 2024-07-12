@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IczpNet.OpenIddict.Scopes;
 
-public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDto, ScopeDto, Guid, ScopeGetListInput, ScopeCreateInput, ScopeUpdateInput>, IScopeAppService
+public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDetailDto, ScopeDto, Guid, ScopeGetListInput, ScopeCreateInput, ScopeUpdateInput>, IScopeAppService
 {
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ScopePermissions.GetList;
@@ -48,7 +48,7 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDt
     }
 
     [HttpPost]
-    public override async Task<ScopeDto> CreateAsync(ScopeCreateInput input)
+    public override async Task<ScopeDetailDto> CreateAsync(ScopeCreateInput input)
     {
         await CheckCreatePolicyAsync(input);
 
@@ -65,7 +65,7 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDt
     }
 
     [HttpPost]
-    public override async Task<ScopeDto> UpdateAsync(Guid id, ScopeUpdateInput input)
+    public override async Task<ScopeDetailDto> UpdateAsync(Guid id, ScopeUpdateInput input)
     {
         return await base.UpdateAsync(id, input);
     }
