@@ -2,12 +2,22 @@
 using Volo.Abp.OpenIddict.Authorizations;
 using Volo.Abp.DependencyInjection;
 using IczpNet.OpenIddict.Authorizations.Dtos;
+using Volo.Abp.Domain.Services;
+using System;
+using IczpNet.OpenIddict.Applications.Dtos;
+using IczpNet.OpenIddict.Applications;
 
 namespace IczpNet.OpenIddict.Authorizations;
 
 
-public class AuthorizationToDtoMapper<T> : IObjectMapper<OpenIddictAuthorization, T>, ITransientDependency where T : AuthorizationDto, new()
+public class AuthorizationToDtoMapper<T> : DomainService, IObjectMapper<OpenIddictAuthorization, T>, ITransientDependency where T : AuthorizationDto, new()
 {
+    public IApplicationDtoResolver ApplicationDtoResolver { get; set; }
+
+    protected virtual ApplicationSimpleDto GetAppDto(Guid? appId)
+    {
+        return ApplicationDtoResolver.GetDto(appId);
+    }
     public virtual T Map(OpenIddictAuthorization source)
     {
         if (source == null)
@@ -19,6 +29,7 @@ public class AuthorizationToDtoMapper<T> : IObjectMapper<OpenIddictAuthorization
         {
             Id = source.Id,
             ApplicationId = source.ApplicationId,
+            Application = GetAppDto(source.ApplicationId),
             CreationDate = source.CreationDate,
             Scopes = Helper.ParseToList(source.Scopes),
             Status = source.Status,
@@ -38,6 +49,7 @@ public class AuthorizationToDtoMapper<T> : IObjectMapper<OpenIddictAuthorization
 
         destination.Id = source.Id;
         destination.ApplicationId = source.ApplicationId;
+        destination.Application = GetAppDto(source.ApplicationId);
         destination.CreationDate = source.CreationDate;
         destination.Scopes = Helper.ParseToList(source.Scopes);
         destination.Status = source.Status;

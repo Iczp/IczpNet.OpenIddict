@@ -4,6 +4,7 @@ using Volo.Abp.Auditing;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.ObjectExtending;
 using System.Collections.Generic;
+using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Authorizations.Dtos;
 
@@ -18,6 +19,11 @@ public class AuthorizationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreation
     /// Gets or sets the application associated with the current authorization.
     /// </summary>
     public virtual Guid? ApplicationId { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual ApplicationSimpleDto Application { get; set; }
 
     /// <summary>
     /// Gets or sets the UTC creation date of the current authorization.

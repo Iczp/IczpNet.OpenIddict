@@ -20,6 +20,9 @@ public class TokenDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
     //     Gets or sets the application associated with the current token.
     public virtual Guid? ApplicationId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public virtual ApplicationSimpleDto Application { get; set; }
 
     //
