@@ -27,12 +27,12 @@ public class ApplicationInputValidator<T> : AbstractValidator<T> where T : Appli
         RuleFor(x => x.PostLogoutRedirectUri)
             .Must(BeAValidUrl)
             .When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUri))
-            .WithMessage("PostLogoutRedirectUri must be a valid URL.");
+            .WithMessage("PostLogoutRedirectUri must be a valid URL when is not null.");
 
         RuleFor(x => x.RedirectUri)
             .Must(BeAValidUrl)
             .When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUri))
-            .WithMessage("PostLogoutRedirectUri must be a valid URL.");
+            .WithMessage("RedirectUri must be a valid URL when is not null.");
 
         RuleFor(x => x.ClientSecret)
             .NotEmpty()
