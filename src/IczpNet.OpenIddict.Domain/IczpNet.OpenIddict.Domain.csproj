@@ -11,7 +11,7 @@
 		<Authors>IczpNet</Authors>
 		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
-		<Version>0.1.1</Version>
+		<Version>0.1.2</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>copyright (c) www.iczp.net </Description>
@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IczpNet.AbpCommons.Domain" Version="0.1.8" />
+    <PackageReference Include="IczpNet.AbpCommons.Domain" Version="0.1.9" />
+
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="7.3.0" />
     <PackageReference Include="Volo.Abp.OpenIddict.Domain" Version="7.3.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Domain.OpenIddict" Version="7.3.0" />

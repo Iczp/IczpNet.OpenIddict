@@ -4,6 +4,7 @@ using Volo.Abp.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using IczpNet.OpenIddict.Scopes.Dtos;
+using IczpNet.AbpCommons.Utils;
 
 namespace IczpNet.OpenIddict.Scopes;
 

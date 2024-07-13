@@ -6,6 +6,7 @@ using Volo.Abp.Domain.Services;
 using System;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Applications;
+using IczpNet.AbpCommons.Utils;
 
 namespace IczpNet.OpenIddict.Authorizations;
 
