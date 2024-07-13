@@ -16,7 +16,9 @@
     "Permission:OpenIddict.ApplicationPermissions.Create": "新建",
     "Permission:OpenIddict.ApplicationPermissions.GetTypeList": "应用类型列表",
     "Permission:OpenIddict.ApplicationPermissions.GetConsentTypeList": "许可类型列表",
-    "Permission:OpenIddict.ApplicationPermissions.GetSecret": "查看密钥",
+    "Permission:OpenIddict.ApplicationPermissions.GetClientSecret": "查看密钥",
+    "Permission:OpenIddict.ApplicationPermissions.SetClientSecret": "修改密钥",
+    "Permission:OpenIddict.ApplicationPermissions.ValidateClientSecret": "验证密钥",
 
     "Permission:OpenIddict.ScopePermissions": "作用域(范围)",
     "Permission:OpenIddict.ScopePermissions.GetItem": "查看",

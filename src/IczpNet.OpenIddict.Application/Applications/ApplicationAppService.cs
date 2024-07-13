@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IczpNet.AbpCommons;
+using IczpNet.AbpCommons.Dtos;
 using IczpNet.AbpCommons.Extensions;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Authorizations.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
-using IczpNet.OpenIddict.BaseDtos;
 using IczpNet.OpenIddict.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -26,16 +27,22 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     protected override string DeletePolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.Delete;
     protected virtual string GetTypeListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetTypeList;
     protected virtual string GetConsentTypeListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetConsentTypeList;
-    protected virtual string GetSecretPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetSecret;
+    protected virtual string GetClientSecretPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetClientSecret;
+    protected virtual string SetClientSecretPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.SetClientSecret;
+    protected virtual string ValidateClientSecretPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.ValidateClientSecret;
 
 
     protected IApplicationManager ApplicationManager { get; set; }
 
+    protected IClientSecretGenerator ClientSecretGenerator { get; set; }
+
     public ApplicationAppService(
         IRepository<OpenIddictApplication, Guid> repository,
-        IApplicationManager applicationManager) : base(repository)
+        IApplicationManager applicationManager,
+        IClientSecretGenerator clientSecretGenerator) : base(repository)
     {
         ApplicationManager = applicationManager;
+        ClientSecretGenerator = clientSecretGenerator;
     }
 
 
@@ -77,6 +84,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
              scopes: input.Scopes,
              redirectUri: input.RedirectUri,
              postLogoutRedirectUri: input.PostLogoutRedirectUri,
+             clientUri: input.ClientUri,
+             logoUri: input.LogoUri,
              permissions: input.Permissions);
 
         var entity = await GetEntityByIdAsync(application.Id);
@@ -106,6 +115,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             scopes: input.Scopes,
             redirectUri: input.RedirectUri,
             postLogoutRedirectUri: input.PostLogoutRedirectUri,
+            clientUri: input.ClientUri,
+            logoUri: input.LogoUri,
             permissions: input.Permissions
             );
 
@@ -177,19 +188,61 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             input, GetConsentTypeListPolicyName, x => x.ConsentType);
     }
 
-    public async Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId)
+    public virtual async Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId)
     {
         var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
 
-        return await GetSecretAsync(app.Id);
+        return await GetClientSecretAsync(app.Id);
     }
 
-    public async Task<ApplicationSecretDto> GetSecretAsync(Guid id)
+    public virtual async Task<ApplicationSecretDto> GetClientSecretAsync(Guid id)
     {
-        await CheckPolicyAsync(GetSecretPolicyName);
+        await CheckPolicyAsync(GetClientSecretPolicyName);
 
         var entity = await GetEntityByIdAsync(id);
 
         return ObjectMapper.Map<OpenIddictApplication, ApplicationSecretDto>(entity);
+    }
+
+    [HttpPost]
+    public virtual async Task<ApplicationSecretDto> SetClientSecretAsync(ApplicationSecretInput input)
+    {
+        await CheckPolicyAsync(SetClientSecretPolicyName);
+
+        var app = Assert.NotNull(await FindByClientIdAsync(input.ClientId), $"No such application,clientId:{input.ClientId}");
+
+        Assert.If(!input.ClientId.Equals(app.ClientId, StringComparison.OrdinalIgnoreCase), $"Input clientId fail:{input.ClientId},it must be:{app.ClientId}");
+
+        var secret = await ApplicationManager.SetClientSecretAsync(app, input.ClientSecret);
+
+        await ApplicationManager.UpdateAsync(app);
+
+        return new ApplicationSecretDto()
+        {
+            Id = app.Id,
+            ClientId = input.ClientId,
+            ClientSecret = secret,
+        };
+    }
+
+    [HttpPost]
+    public virtual async Task<bool> ValidateClientSecretAsync(ApplicationSecretInput input)
+    {
+        await CheckPolicyAsync(ValidateClientSecretPolicyName);
+
+        var app = Assert.NotNull(await FindByClientIdAsync(input.ClientId), $"No such application,clientId:{input.ClientId}");
+
+        Assert.If(!input.ClientId.Equals(app.ClientId, StringComparison.OrdinalIgnoreCase), $"Input clientId fail:{input.ClientId},it must be:{app.ClientId}");
+
+        var isValidated = await ApplicationManager.ValidateClientSecretAsync(app, input.ClientSecret);
+
+        return isValidated;
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public virtual async Task<string> GenerateClientSecretAsync(int length = 32)
+    {
+        return await ClientSecretGenerator.GenerateAsync(length);
     }
 }

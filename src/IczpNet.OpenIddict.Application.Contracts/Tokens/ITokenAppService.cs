@@ -1,5 +1,5 @@
 ﻿using IczpNet.AbpCommons;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using IczpNet.OpenIddict.Tokens.Dtos;
 using System;
 using System.Threading.Tasks;

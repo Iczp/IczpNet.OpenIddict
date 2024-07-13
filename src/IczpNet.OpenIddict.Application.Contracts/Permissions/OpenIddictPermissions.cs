@@ -23,7 +23,9 @@ public class OpenIddictPermissions
         public const string Create = Default + "." + nameof(Create);
         public const string GetTypeList = Default + "." + nameof(GetTypeList);
         public const string GetConsentTypeList = Default + "." + nameof(GetConsentTypeList);
-        public const string GetSecret = Default + "." + nameof(GetSecret);
+        public const string GetClientSecret = Default + "." + nameof(GetClientSecret);
+        public const string SetClientSecret = Default + "." + nameof(SetClientSecret);
+        public const string ValidateClientSecret = Default + "." + nameof(ValidateClientSecret);
     }
 
 

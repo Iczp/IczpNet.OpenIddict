@@ -118,6 +118,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
        List<string> scopes,
        string redirectUri = null,
        string postLogoutRedirectUri = null,
+       string clientUri = null,
+       string logoUri = null,
        List<string> permissions = null, CancellationToken cancellationToken = default)
     {
         Assert.If(string.IsNullOrEmpty(name), $"client_id  required");
@@ -137,7 +139,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
             Type = type,
             ClientSecret = secret,
             ConsentType = consentType,
-            DisplayName = displayName
+            DisplayName = displayName,
         };
 
         CheckSecret(type, secret);
@@ -331,12 +333,14 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     List<string> scopes,
     string redirectUri = null,
     string postLogoutRedirectUri = null,
+    string clientUri = null,
+    string logoUri = null,
     List<string> permissions = null,
     CancellationToken cancellationToken = default)
     {
         var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
 
-        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUri, postLogoutRedirectUri, permissions, cancellationToken);
+        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUri, postLogoutRedirectUri, clientUri, logoUri, permissions, cancellationToken);
     }
 
 
@@ -350,6 +354,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     List<string> scopes,
     string redirectUri = null,
     string postLogoutRedirectUri = null,
+    string clientUri = null,
+    string logoUri = null,
     List<string> permissions = null,
     CancellationToken cancellationToken = default)
     {
@@ -377,6 +383,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         applcation.ConsentType = consentType;
         applcation.DisplayName = displayName;
+        applcation.ClientUri = clientUri;
+        applcation.LogoUri = logoUri;
 
         await PopulateAsync(descriptor, applcation, cancellationToken);
 
@@ -427,6 +435,15 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
                 null
             );
         }
+    }
+
+    public override async ValueTask<bool> ValidateClientSecretAsync(OpenIddictApplicationModel application, string secret, CancellationToken cancellationToken = default)
+    {
+        if (application.Type.Equals(OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase) && secret == null)
+        {
+            return true;
+        }
+        return await base.ValidateClientSecretAsync(application, secret, cancellationToken);
     }
 
 }

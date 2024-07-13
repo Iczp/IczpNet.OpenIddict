@@ -1,16 +1,18 @@
 ﻿using IczpNet.OpenIddict.Localization;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Mvc;
+using OpenIddict.Abstractions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Reflection;
 
-namespace IczpNet.OpenIddict.BaseAppServices;
+
+namespace IczpNet.OpenIddict.constants;
 [ApiExplorerSettings(GroupName = OpenIddictRemoteServiceConsts.ModuleName)]
-public class CultureAppServiceAppService : ApplicationService
+public class ConstsAppServiceAppService : ApplicationService
 {
-    protected CultureAppServiceAppService()
+    protected ConstsAppServiceAppService()
     {
         LocalizationResource = typeof(OpenIddictResource);
         ObjectMapperContext = typeof(OpenIddictApplicationModule);
@@ -37,4 +39,17 @@ public class CultureAppServiceAppService : ApplicationService
         }
         return Task.FromResult(dict);
     }
+
+
+    public virtual async Task<Dictionary<string, object>> GetOpenIddictConstantsTreeAsync()
+    {
+        return await Task.FromResult(Helper.GetConstantsTreeDictionary(typeof(OpenIddictConstants)));
+    }
+
+    public virtual async Task<Dictionary<string, string>> GetOpenIddictConstantsAsync()
+    {
+        return await Task.FromResult(Helper.GetConstantsFlatDictionary(typeof(OpenIddictConstants)));
+    }
+
+    
 }

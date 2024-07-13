@@ -1,6 +1,6 @@
 ﻿using IczpNet.AbpCommons;
 using IczpNet.OpenIddict.Authorizations.Dtos;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;

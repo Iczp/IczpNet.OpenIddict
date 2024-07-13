@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IczpNet.OpenIddict.Authorizations.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using IczpNet.OpenIddict.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;

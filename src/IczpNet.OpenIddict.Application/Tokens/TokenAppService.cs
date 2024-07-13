@@ -8,7 +8,7 @@ using IczpNet.OpenIddict.Permissions;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Tokens;
 using Volo.Abp.Application.Dtos;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using Volo.Abp;
 using Volo.Abp.Localization;
 using Volo.Abp.Reflection;

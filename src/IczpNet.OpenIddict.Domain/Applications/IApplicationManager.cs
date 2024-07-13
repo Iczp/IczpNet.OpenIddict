@@ -23,6 +23,8 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
        List<string> scopes,
        string redirectUri = null,
        string postLogoutRedirectUri = null,
+       string clientUri = null,
+       string logoUri = null,
        List<string> permissions = null, CancellationToken cancellationToken = default);
 
     ValueTask<OpenIddictApplicationModel> UpdateAsync(
@@ -35,6 +37,8 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
     List<string> scopes,
     string redirectUri = null,
     string postLogoutRedirectUri = null,
+    string clientUri = null,
+    string logoUri = null,
     List<string> permissions = null,
     CancellationToken cancellationToken = default);
 
@@ -48,6 +52,8 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
     List<string> scopes,
     string redirectUri = null,
     string postLogoutRedirectUri = null,
+    string clientUri = null,
+    string logoUri = null,
     List<string> permissions = null,
     CancellationToken cancellationToken = default);
 }

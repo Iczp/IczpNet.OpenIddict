@@ -2,7 +2,7 @@
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using System.Threading.Tasks;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using Volo.Abp;
 using System;
 

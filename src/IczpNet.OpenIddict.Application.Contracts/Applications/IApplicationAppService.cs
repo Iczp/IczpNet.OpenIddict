@@ -1,7 +1,7 @@
 ﻿using IczpNet.AbpCommons;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Authorizations.Dtos;
-using IczpNet.OpenIddict.BaseDtos;
+using IczpNet.AbpCommons.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,6 +23,8 @@ public interface IApplicationAppService :ICrudAbpCommonsAppService<ApplicationDe
 
     Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId);
 
-    Task<ApplicationSecretDto> GetSecretAsync(Guid id);
+    Task<ApplicationSecretDto> GetClientSecretAsync(Guid id);
+
+    Task<ApplicationSecretDto> SetClientSecretAsync(ApplicationSecretInput input);
 
 }

@@ -1,4 +1,4 @@
-﻿using IczpNet.OpenIddict.BaseDtos;
+﻿using IczpNet.AbpCommons.Dtos;
 
 namespace IczpNet.OpenIddict.Authorizations.Dtos;
 

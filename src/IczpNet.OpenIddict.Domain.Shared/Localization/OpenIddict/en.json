@@ -12,7 +12,9 @@
     "Permission:OpenIddict.ApplicationPermissions.Create": "Create",
     "Permission:OpenIddict.ApplicationPermissions.GetTypeList": "Type List",
     "Permission:OpenIddict.ApplicationPermissions.GetConsentTypeList": "Consent Type List",
-    "Permission:OpenIddict.ApplicationPermissions.GetSecret": "Get Secret",
+    "Permission:OpenIddict.ApplicationPermissions.GetClientSecret": "Get Client Secret",
+    "Permission:OpenIddict.ApplicationPermissions.SetClientSecret": "Set Client Secret",
+    "Permission:OpenIddict.ApplicationPermissions.ValidateClientSecret": "Validate Client Secret",
 
     "Permission:OpenIddict.ScopePermissions": "Scope",
     "Permission:OpenIddict.ScopePermissions.GetItem": "GetItem",
