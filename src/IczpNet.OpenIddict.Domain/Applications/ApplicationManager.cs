@@ -411,8 +411,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         await PopulateAsync(applcation, descriptor, cancellationToken);
 
-        // 更新客户端密钥
-        await SetClientSecretAsync(applcation, secret, cancellationToken);
+        //// 更新客户端密钥
+        //await SetClientSecretAsync(applcation, secret, cancellationToken);
 
         // 保存更改
         await UpdateAsync(applcation, cancellationToken);
