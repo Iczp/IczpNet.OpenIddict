@@ -1,41 +1,12 @@
-﻿using OpenIddict.Abstractions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace IczpNet.OpenIddict;
 
-public static class Helper
+public static class ReflectHelper
 {
-    public static List<string> ParseToList(string json)
-    {
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return null;
-        }
-        using var document = JsonDocument.Parse(json);
-
-        var builder = ImmutableArray.CreateBuilder<string>(document.RootElement.GetArrayLength());
-
-        foreach (var element in document.RootElement.EnumerateArray())
-        {
-            var value = element.GetString();
-            if (string.IsNullOrEmpty(value))
-            {
-                continue;
-            }
-
-            builder.Add(value);
-        }
-
-        return [.. builder];
-    }
-
-
     public static Dictionary<string, object> GetConstantsTreeDictionary(Type constantsType)
     {
         var result = new Dictionary<string, object>();
@@ -100,10 +71,4 @@ public static class Helper
             PopulateFlatDictionary(nestedType, result, currentPaths);
         }
     }
-
-
-
-
-
-
 }

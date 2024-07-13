@@ -43,12 +43,12 @@ public class ConstsAppServiceAppService : ApplicationService
 
     public virtual async Task<Dictionary<string, object>> GetOpenIddictConstantsTreeAsync()
     {
-        return await Task.FromResult(Helper.GetConstantsTreeDictionary(typeof(OpenIddictConstants)));
+        return await Task.FromResult(ReflectHelper.GetConstantsTreeDictionary(typeof(OpenIddictConstants)));
     }
 
     public virtual async Task<Dictionary<string, string>> GetOpenIddictConstantsAsync()
     {
-        return await Task.FromResult(Helper.GetConstantsFlatDictionary(typeof(OpenIddictConstants)));
+        return await Task.FromResult(ReflectHelper.GetConstantsFlatDictionary(typeof(OpenIddictConstants)));
     }
 
     

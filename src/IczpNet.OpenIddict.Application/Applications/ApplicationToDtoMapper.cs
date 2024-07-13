@@ -17,7 +17,7 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
             return null;
         }
 
-        var permissions = Helper.ParseToList(source.Permissions) ?? [];
+        var permissions = JsonHelper.ParseToList(source.Permissions) ?? [];
 
         return new T()
         {
@@ -29,12 +29,12 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
             Permissions = permissions,
             GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
             Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope),
-            RedirectUris = Helper.ParseToList(source.RedirectUris),
-            PostLogoutRedirectUris = Helper.ParseToList(source.PostLogoutRedirectUris),
+            RedirectUris = JsonHelper.ParseToList(source.RedirectUris),
+            PostLogoutRedirectUris = JsonHelper.ParseToList(source.PostLogoutRedirectUris),
             ConsentType = source.ConsentType,
             DisplayNames = source.DisplayNames,
             Properties = source.Properties,
-            Requirements = Helper.ParseToList(source.Requirements),
+            Requirements = JsonHelper.ParseToList(source.Requirements),
             ClientUri = source.ClientUri,
             LogoUri = source.LogoUri,
             CreationTime = source.CreationTime,
@@ -56,7 +56,7 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         {
             return null;
         }
-        var permissions = Helper.ParseToList(source.Permissions) ?? [];
+        var permissions = JsonHelper.ParseToList(source.Permissions) ?? [];
         destination.Id = source.Id;
         destination.ClientId = source.ClientId;
         //destination.ClientSecret = source.ClientSecret;
@@ -67,9 +67,9 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         destination.Properties = source.Properties;
         destination.GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType);
         destination.Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope);
-        destination.RedirectUris = Helper.ParseToList(source.RedirectUris);
-        destination.PostLogoutRedirectUris = Helper.ParseToList(source.PostLogoutRedirectUris);
-        destination.Requirements = Helper.ParseToList(source.Requirements);
+        destination.RedirectUris = JsonHelper.ParseToList(source.RedirectUris);
+        destination.PostLogoutRedirectUris = JsonHelper.ParseToList(source.PostLogoutRedirectUris);
+        destination.Requirements = JsonHelper.ParseToList(source.Requirements);
         destination.Type = source.Type;
         destination.ClientUri = source.ClientUri;
         destination.LogoUri = source.LogoUri;

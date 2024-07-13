@@ -31,7 +31,7 @@ public class AuthorizationToDtoMapper<T> : DomainService, IObjectMapper<OpenIddi
             ApplicationId = source.ApplicationId,
             Application = GetAppDto(source.ApplicationId),
             CreationDate = source.CreationDate,
-            Scopes = Helper.ParseToList(source.Scopes),
+            Scopes = JsonHelper.ParseToList(source.Scopes),
             Status = source.Status,
             Subject = source.Subject,
             Type = source.Type,
@@ -51,7 +51,7 @@ public class AuthorizationToDtoMapper<T> : DomainService, IObjectMapper<OpenIddi
         destination.ApplicationId = source.ApplicationId;
         destination.Application = GetAppDto(source.ApplicationId);
         destination.CreationDate = source.CreationDate;
-        destination.Scopes = Helper.ParseToList(source.Scopes);
+        destination.Scopes = JsonHelper.ParseToList(source.Scopes);
         destination.Status = source.Status;
         destination.Subject = source.Subject;
         destination.Type = source.Type;

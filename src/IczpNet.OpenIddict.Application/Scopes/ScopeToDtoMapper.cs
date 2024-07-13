@@ -17,7 +17,7 @@ public class ScopeToDtoMapper<T> : IObjectMapper<OpenIddictScope, T>, ITransient
             return null;
         }
 
-        var resources = Helper.ParseToList(source.Resources) ?? [];
+        var resources = JsonHelper.ParseToList(source.Resources) ?? [];
 
         return new T
         {
@@ -48,7 +48,7 @@ public class ScopeToDtoMapper<T> : IObjectMapper<OpenIddictScope, T>, ITransient
         {
             return null;
         }
-        var permissions = Helper.ParseToList(source.Resources) ?? [];
+        var permissions = JsonHelper.ParseToList(source.Resources) ?? [];
         destination.Id = source.Id;
         destination.Name = source.Name;
         destination.DisplayName = source.DisplayName;
