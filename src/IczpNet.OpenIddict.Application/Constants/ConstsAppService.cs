@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Data;
 using Volo.Abp.Reflection;
 
 
@@ -15,10 +16,19 @@ namespace IczpNet.OpenIddict.constants;
 [ApiExplorerSettings(GroupName = OpenIddictRemoteServiceConsts.ModuleName)]
 public class ConstsAppService : ApplicationService
 {
-    protected ConstsAppService()
+
+    protected IDataSeeder DataSeeder { get; set; }
+    protected ConstsAppService(IDataSeeder dataSeeder)
     {
         LocalizationResource = typeof(OpenIddictResource);
         ObjectMapperContext = typeof(OpenIddictApplicationModule);
+        DataSeeder = dataSeeder;
+    }
+
+    public async Task<DateTime> SendAsync()
+    {
+        await DataSeeder.SeedAsync();
+        return DateTime.Now;
     }
 
     public virtual Task<Dictionary<string, string>> GetCultureAsync(string keyTemp = "Permission:{{key}}", string valueTemp = "{{key}}")
