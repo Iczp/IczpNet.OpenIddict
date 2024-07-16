@@ -16,11 +16,7 @@ public class ApplicationUpdateInput
     /// </summary>
     [DefaultValue(null)] 
     public string DisplayName { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
-    [DefaultValue(null)]
-    public virtual string ClientSecret { get; set; }
+
 
     /// <summary>
     /// 

@@ -364,13 +364,17 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         //Assert.If(name.Equals(applcation.ClientId), $"client_id cannot be modified");
 
-        CheckSecret(type, secret);
+        //CheckSecret(type, secret);
+
+        CheckSecret(type, applcation.ClientSecret);
 
         Check.NotNullOrEmpty(grantTypes, nameof(grantTypes));
 
         Check.NotNullOrEmpty(scopes, nameof(scopes));
 
         Assert.If(applcation == null, $"The application is null.");
+
+
 
         var descriptor = new OpenIddictApplicationDescriptor
         {

@@ -11,6 +11,7 @@ using IczpNet.OpenIddict.BaseAppServices;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Applications;
@@ -110,7 +111,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             type: input.ClientType,
             consentType: input.ConsentType,
             displayName: input.DisplayName,
-            secret: input.ClientSecret,
+            secret: application.ClientSecret,//input.ClientSecret,
             grantTypes: input.GrantTypes,
             scopes: input.Scopes,
             redirectUri: input.RedirectUri,
@@ -188,6 +189,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             input, GetConsentTypeListPolicyName, x => x.ConsentType);
     }
 
+    [RemoteService(false)]
     public virtual async Task<ApplicationSecretDto> GetSecretByClientIdAsync(string clientId)
     {
         var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
@@ -195,6 +197,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return await GetClientSecretAsync(app.Id);
     }
 
+    [RemoteService(false)]
     public virtual async Task<ApplicationSecretDto> GetClientSecretAsync(Guid id)
     {
         await CheckPolicyAsync(GetClientSecretPolicyName);

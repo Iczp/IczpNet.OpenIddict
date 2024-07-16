@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Localization;
-using OpenIddict.Abstractions;
 using System;
 using System.Collections.Generic;
 using Volo.Abp.Localization;
@@ -34,15 +33,7 @@ public class ApplicationInputValidator<T> : AbstractValidator<T> where T : Appli
             .When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUri))
             .WithMessage("RedirectUri must be a valid URL when is not null.");
 
-        RuleFor(x => x.ClientSecret)
-            .NotEmpty()
-            .When(x => string.Equals(x.ClientType, OpenIddictConstants.ClientTypes.Confidential, StringComparison.OrdinalIgnoreCase))
-            .WithMessage($"No client secret can be set for [clienType:{OpenIddictConstants.ClientTypes.Confidential}] applications.");
-
-        RuleFor(x => x.ClientSecret)
-            .Empty()
-            .When(x => string.Equals(x.ClientType, OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase))
-            .WithMessage($"Secret is required for [clienType:{OpenIddictConstants.ClientTypes.Public}] applications.");
+        
     }
 
     protected virtual bool BeAValidType(string type)
