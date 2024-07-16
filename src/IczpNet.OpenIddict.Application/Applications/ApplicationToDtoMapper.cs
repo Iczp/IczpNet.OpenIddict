@@ -25,7 +25,7 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
             Id = source.Id,
             ClientId = source.ClientId,
             DisplayName = source.DisplayName,
-            Type = source.Type,
+            ClientType = source.ClientType,
             //ClientSecret = source.ClientSecret,
             Permissions = permissions,
             GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
@@ -71,7 +71,7 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         destination.RedirectUris = JsonHelper.ParseToList(source.RedirectUris);
         destination.PostLogoutRedirectUris = JsonHelper.ParseToList(source.PostLogoutRedirectUris);
         destination.Requirements = JsonHelper.ParseToList(source.Requirements);
-        destination.Type = source.Type;
+        destination.ClientType = source.ClientType;
         destination.ClientUri = source.ClientUri;
         destination.LogoUri = source.LogoUri;
         destination.CreationTime = source.CreationTime;

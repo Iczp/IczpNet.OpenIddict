@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <RootNamespace>IczpNet.OpenIddict</RootNamespace>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
@@ -25,10 +25,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IczpNet.AbpCommons.EntityFrameworkCore" Version="0.1.9" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="7.3.0" />
-    <PackageReference Include="Volo.Abp.OpenIddict.EntityFrameworkCore" Version="7.3.0" />
+    <PackageReference Include="IczpNet.AbpCommons.EntityFrameworkCore" Version="0.8.0" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="8.2.0" />
+    <PackageReference Include="Volo.Abp.OpenIddict.EntityFrameworkCore" Version="8.2.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Domain\IczpNet.OpenIddict.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.8.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

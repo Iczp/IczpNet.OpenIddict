@@ -51,7 +51,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     {
         var query = (await base.CreateFilteredQueryAsync(input))
             .WhereIf(!input.ClientId.IsNullOrEmpty(), x => x.ClientId.Equals(input.ClientId))
-            .WhereIf(!input.ClientType.IsNullOrEmpty(), x => x.Type.Equals(input.ClientType))
+            .WhereIf(!input.ClientType.IsNullOrEmpty(), x => x.ClientType.Equals(input.ClientType))
             .WhereIf(!input.ConsentType.IsNullOrEmpty(), x => x.ConsentType.Equals(input.ConsentType))
             .WhereIf(!input.ClientUri.IsNullOrEmpty(), x => x.ClientUri.StartsWith(input.ClientUri))
             .WhereIf(!input.DisplayName.IsNullOrEmpty(), x => x.DisplayName.StartsWith(input.DisplayName))
@@ -173,8 +173,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
     public virtual async Task<PagedResultDto<KeyValueDto<string>>> GetTypeListAsync(ApplicationTypeGetListInput input)
     {
         return await GetEntityGroupListAsync(
-            q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Type.StartsWith(input.Keyword)),
-            input, GetTypeListPolicyName, x => x.Type);
+            q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.ClientType.StartsWith(input.Keyword)),
+            input, GetTypeListPolicyName, x => x.ClientType);
     }
 
     /// <summary>

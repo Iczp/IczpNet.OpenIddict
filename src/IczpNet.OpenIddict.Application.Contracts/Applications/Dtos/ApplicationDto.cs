@@ -65,7 +65,7 @@ public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTi
     /// <summary>
     /// Gets or sets the application type associated with the application.
     /// </summary>
-    public string Type { get; set; }
+    public string ClientType { get; set; }
 
     /// <summary>
     /// Gets or sets the localized display names

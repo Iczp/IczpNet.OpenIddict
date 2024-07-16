@@ -136,7 +136,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         var descriptor = new OpenIddictApplicationDescriptor
         {
             ClientId = name,
-            Type = type,
+            ClientType = type,
             ClientSecret = secret,
             ConsentType = consentType,
             DisplayName = displayName,
@@ -378,12 +378,12 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         var descriptor = new OpenIddictApplicationDescriptor
         {
-            Type = type,
+            ClientType = type,
             ConsentType = consentType,
             DisplayName = displayName
         };
 
-        applcation.Type = type;
+        applcation.ClientType = type;
 
         applcation.ConsentType = consentType;
         applcation.DisplayName = displayName;
@@ -443,7 +443,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
     public override async ValueTask<bool> ValidateClientSecretAsync(OpenIddictApplicationModel application, string secret, CancellationToken cancellationToken = default)
     {
-        if (application.Type.Equals(OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase) && secret == null)
+        if (application.ClientType.Equals(OpenIddictConstants.ClientTypes.Public, StringComparison.OrdinalIgnoreCase) && secret == null)
         {
             return true;
         }
