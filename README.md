@@ -36,21 +36,7 @@ https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build
 dotnet nuget push "src/*/bin/Release/*0.1.1.nupkg" --skip-duplicate -k {APIKEY} --source https://api.nuget.org/v3/index.json
 ```
 
-## Dependency
 
-### Volo.Abp.Identity
-
-```bash
-abp add-module Volo.Abp.Identity
-```
-
-
-
-### Volo.AuditLogging
-
-```bash
-abp add-module Volo.AuditLogging
-```
 
 ## Usage
 
