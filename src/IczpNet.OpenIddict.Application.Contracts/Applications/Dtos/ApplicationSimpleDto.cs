@@ -23,7 +23,7 @@ public class ApplicationSimpleDto : EntityDto<Guid>
     /// <summary>
     /// Gets or sets the application type associated with the application.
     /// </summary>
-    public string Type { get; set; }
+    public string ClientType { get; set; }
 
     /// <summary>
     /// 
