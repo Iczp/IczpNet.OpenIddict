@@ -16,6 +16,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>copyright (c) www.iczp.net </Description>
+		<PackageIcon>IczpNet.jpg</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\IczpNet.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\README.md" Link="README.md">
       <PackagePath>\</PackagePath>
       <Pack>True</Pack>

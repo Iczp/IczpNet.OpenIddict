@@ -26,6 +26,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\IczpNet.jpg" Link="IczpNet.jpg">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
     <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
