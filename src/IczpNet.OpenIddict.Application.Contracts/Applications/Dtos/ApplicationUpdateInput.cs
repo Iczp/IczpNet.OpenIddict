@@ -17,6 +17,12 @@ public class ApplicationUpdateInput
     [DefaultValue(null)] 
     public string DisplayName { get; set; }
 
+    /// <summary>
+    /// Gets or sets the JSON Web Key Set associated with
+    /// the application, serialized as a JSON object.
+    /// </summary>
+    public virtual string JsonWebKeySet { get; set; }
+
 
     /// <summary>
     /// 
@@ -48,6 +54,16 @@ public class ApplicationUpdateInput
     /// 
     /// </summary>
     public virtual string ConsentType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the application type associated with the application.
+    /// </summary>
+    public virtual string ApplicationType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the settings serialized as a JSON object.
+    /// </summary>
+    public virtual string Settings { get; set; }
 
     /// <summary>
     /// URI to further information about client.

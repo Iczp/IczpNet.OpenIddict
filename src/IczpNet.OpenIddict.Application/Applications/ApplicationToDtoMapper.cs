@@ -24,9 +24,10 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         {
             Id = source.Id,
             ClientId = source.ClientId,
+            //ClientSecret = source.ClientSecret,
             DisplayName = source.DisplayName,
             ClientType = source.ClientType,
-            //ClientSecret = source.ClientSecret,
+            ApplicationType = source.ApplicationType,
             Permissions = permissions,
             GrantTypes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.GrantType),
             Scopes = GetPart(permissions, OpenIddictConstants.Permissions.Prefixes.Scope),
@@ -36,6 +37,8 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
             DisplayNames = source.DisplayNames,
             Properties = source.Properties,
             Requirements = JsonHelper.ParseToList(source.Requirements),
+            JsonWebKeySet = source.JsonWebKeySet,
+            Settings = source.Settings,
             ClientUri = source.ClientUri,
             LogoUri = source.LogoUri,
             CreationTime = source.CreationTime,
@@ -62,6 +65,8 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         destination.ClientId = source.ClientId;
         //destination.ClientSecret = source.ClientSecret;
         destination.ConsentType = source.ConsentType;
+        destination.ClientType = source.ClientType;
+        destination.ApplicationType = source.ApplicationType;
         destination.DisplayName = source.DisplayName;
         destination.DisplayNames = source.DisplayNames;
         destination.Permissions = permissions;
@@ -71,7 +76,8 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         destination.RedirectUris = JsonHelper.ParseToList(source.RedirectUris);
         destination.PostLogoutRedirectUris = JsonHelper.ParseToList(source.PostLogoutRedirectUris);
         destination.Requirements = JsonHelper.ParseToList(source.Requirements);
-        destination.ClientType = source.ClientType;
+        destination.JsonWebKeySet = source.JsonWebKeySet;
+        destination.Settings = source.Settings;
         destination.ClientUri = source.ClientUri;
         destination.LogoUri = source.LogoUri;
         destination.CreationTime = source.CreationTime;

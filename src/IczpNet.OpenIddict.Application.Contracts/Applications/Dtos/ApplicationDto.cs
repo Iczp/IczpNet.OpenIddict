@@ -23,6 +23,11 @@ public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTi
     //public string ClientSecret { get; set; }
 
     /// <summary>
+    /// Gets or sets the application type associated with the application.
+    /// </summary>
+    public virtual string ApplicationType { get; set; }
+
+    /// <summary>
     /// Gets or sets the consent type associated with the application.
     /// </summary>
     public string ConsentType { get; set; }
@@ -75,6 +80,12 @@ public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTi
     public virtual object DisplayNames { get; set; }
 
     /// <summary>
+    /// Gets or sets the JSON Web Key Set associated with
+    /// the application, serialized as a JSON object.
+    /// </summary>
+    public virtual string JsonWebKeySet { get; set; }
+
+    /// <summary>
     /// Gets or sets the permissions associated with the
     /// current application, serialized as a JSON array.
     /// </summary>
@@ -113,6 +124,11 @@ public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTi
     /// GrantTypes
     /// </summary>
     public virtual List<string> GrantTypes { get; set; }
+
+    /// <summary>
+    /// Gets or sets the settings serialized as a JSON object.
+    /// </summary>
+    public virtual string Settings { get; set; }
 
     /// <summary>
     /// 
