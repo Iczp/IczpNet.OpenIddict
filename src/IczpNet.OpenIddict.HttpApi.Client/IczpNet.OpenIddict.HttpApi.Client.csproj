@@ -11,14 +11,14 @@
 		<Authors>IczpNet</Authors>
 		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
-		<Version>8.2.0.1</Version>
+		<Version>8.2.0.2</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>copyright (c) www.iczp.net </Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IczpNet.AbpCommons.HttpApi.Client" Version="0.8.0" />
+    <PackageReference Include="IczpNet.AbpCommons.HttpApi.Client" Version="0.8.2" />
     <PackageReference Include="Volo.Abp.Http.Client" Version="8.2.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Application.Contracts\IczpNet.OpenIddict.Application.Contracts.csproj" />
   </ItemGroup>
