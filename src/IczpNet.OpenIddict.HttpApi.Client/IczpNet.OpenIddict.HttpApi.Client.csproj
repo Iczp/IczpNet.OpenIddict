@@ -2,10 +2,10 @@
 
   <Import Project="..\..\common.props" />
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <Nullable>disable</Nullable>
-    <RootNamespace>IczpNet.OpenIddict</RootNamespace>
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<Nullable>disable</Nullable>
+		<RootNamespace>IczpNet.OpenIddict</RootNamespace>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Authors>IczpNet</Authors>
@@ -14,8 +14,11 @@
 		<Version>8.2.0.3</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Description>copyright (c) www.iczp.net </Description>
-  </PropertyGroup>
+		<Description>OpenIddict management for abpVnext8.2 </Description>
+		<Copyright>copyright (c) www.iczp.net </Copyright>
+		<PackageIcon>IczpNet.jpg</PackageIcon>
+		<PackageReleaseNotes>v0.3</PackageReleaseNotes>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IczpNet.AbpCommons.HttpApi.Client" Version="0.8.2" />
