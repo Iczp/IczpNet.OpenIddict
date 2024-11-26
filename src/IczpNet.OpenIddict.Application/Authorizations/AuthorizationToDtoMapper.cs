@@ -37,7 +37,7 @@ public class AuthorizationToDtoMapper<T> : DomainService, IObjectMapper<OpenIddi
             Subject = source.Subject,
             Type = source.Type,
             Properties = source.Properties,
-            CreationTime = source.CreationTime,
+            //CreationTime = source.CreationTime,
         };
     }
 
@@ -57,7 +57,7 @@ public class AuthorizationToDtoMapper<T> : DomainService, IObjectMapper<OpenIddi
         destination.Subject = source.Subject;
         destination.Type = source.Type;
         destination.Properties = source.Properties;
-        destination.CreationTime = source.CreationTime;
+        //destination.CreationTime = source.CreationTime;
 
         return destination;
     }
