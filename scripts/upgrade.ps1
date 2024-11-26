@@ -40,7 +40,7 @@ Get-ChildItem -Path $projectsPath -Recurse -Filter *.csproj | ForEach-Object {
     # 更新版本号
     if ((Get-Content $file) -match '<Version>') {
         (Get-Content $file) -replace '<Version>.*<\/Version>', "<Version>$newVersion</Version>" | Set-Content $file
-        Write-Host "已更新版本号: $file" -ForegroundColor Green
+        Write-Host "已更新版本号[$newVersion]: $file" -ForegroundColor Green
     } 
     # else {
     #     # 如果没有 <Version> 标签，添加它
