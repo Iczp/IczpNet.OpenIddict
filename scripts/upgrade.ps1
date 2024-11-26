@@ -10,7 +10,7 @@ $gitStatus = git status --porcelain
 if ($gitStatus) {
     Write-Host "检测到未提交的更改，请先提交或暂存以下文件：" -ForegroundColor Red
     Write-Host $gitStatus
-    # exit 1
+    exit 1
 } else {
     Write-Host "没有未提交的 Git 更改，继续执行脚本。" -ForegroundColor Green
 }
