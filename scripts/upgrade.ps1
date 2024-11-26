@@ -109,4 +109,4 @@ abp update
 #     Write-Host "推送到 NuGet 源已取消。" -ForegroundColor Yellow
 # }
 
-# Write-Host "脚本执行完成！" -ForegroundColor Cyan
+Write-Host "脚本执行完成！" -ForegroundColor Cyan
