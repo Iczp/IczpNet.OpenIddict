@@ -11,7 +11,7 @@
 		<Authors>IczpNet</Authors>
 		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
-		<Version>8.2.0.4</Version>
+		<Version>9.0.0.0</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>OpenIddict management for abpVnext8.2 </Description>
@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.MongoDB" Version="8.2.0" />
-    <PackageReference Include="Volo.Abp.OpenIddict.MongoDB" Version="8.2.0" />
+    <PackageReference Include="Volo.Abp.MongoDB" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.OpenIddict.MongoDB" Version="9.0.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Domain\IczpNet.OpenIddict.Domain.csproj" />
   </ItemGroup>
 

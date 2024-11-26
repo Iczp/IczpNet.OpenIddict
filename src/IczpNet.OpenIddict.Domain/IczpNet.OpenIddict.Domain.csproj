@@ -11,7 +11,7 @@
 		<Authors>IczpNet</Authors>
 		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
-		<Version>8.2.0.4</Version>
+		<Version>9.0.0.0</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>OpenIddict management for abpVnext8.2 </Description>
@@ -34,9 +34,9 @@
   <ItemGroup>
     <PackageReference Include="IczpNet.AbpCommons.Domain" Version="0.8.2" />
 
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="8.2.0" />
-    <PackageReference Include="Volo.Abp.OpenIddict.Domain" Version="8.2.0" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.OpenIddict" Version="8.2.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Domain" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.OpenIddict" Version="9.0.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Domain.Shared\IczpNet.OpenIddict.Domain.Shared.csproj" />
   </ItemGroup>
 

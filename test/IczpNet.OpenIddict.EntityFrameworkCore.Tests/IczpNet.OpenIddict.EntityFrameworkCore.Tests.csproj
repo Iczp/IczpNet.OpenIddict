@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.7" />
     <ProjectReference Include="..\..\src\IczpNet.OpenIddict.EntityFrameworkCore\IczpNet.OpenIddict.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\IczpNet.OpenIddict.TestBase\IczpNet.OpenIddict.TestBase.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="8.2.0" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

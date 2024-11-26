@@ -11,7 +11,7 @@
 		<Authors>IczpNet</Authors>
 		<RepositoryUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Iczp/IczpNet.OpenIddict.git</PackageProjectUrl>
-		<Version>8.2.0.4</Version>
+		<Version>9.0.0.0</Version>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Description>OpenIddict management for abpVnext8.2 </Description>
@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="IczpNet.AbpCommons.HttpApi" Version="0.8.2" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="8.2.0" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="9.0.0" />
     <ProjectReference Include="..\IczpNet.OpenIddict.Application.Contracts\IczpNet.OpenIddict.Application.Contracts.csproj" />
   </ItemGroup>
 
