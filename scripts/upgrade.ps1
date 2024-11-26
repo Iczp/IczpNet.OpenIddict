@@ -25,10 +25,13 @@ if (Test-Path $nugetKeyFilePath) {
 }
 
 # 手动输入版本号
-$newVersion = Read-Host "请输入新的版本号 (例如 1.0.1)"
+# 设置默认版本号
+$defaultVersion = "9.0.0.0"
+$newVersion = Read-Host "请输入新的版本号 (例如 $defaultVersion)"
 if (-not $newVersion) {
-    Write-Error "版本号不能为空！"
-    exit 1
+    $newVersion = $defaultVersion
+    Write-Host "使用版本号: $nugetApiKey" -ForegroundColor Yellow
+    # exit 1
 }
 
 # 1. 查找并更新项目版本号
