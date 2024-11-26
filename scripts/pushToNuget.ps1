@@ -16,7 +16,7 @@ else {
 }
 
 
-$defaultVersion = "9.0.0.0"
+$defaultVersion = "9.0.0"
 $newVersion = Read-Host "请输入新的版本号 (例如 $defaultVersion)"
 if (-not $newVersion) {
     $newVersion = $defaultVersion
@@ -55,6 +55,11 @@ foreach ($solutionFile in $solutionFiles) {
 
 
 Write-Host "项目构建成功！" -ForegroundColor Green
+
+Get-ChildItem -Path $projectsPath -Recurse -Filter *$newVersion.nupkg | ForEach-Object {
+    $nupkgFile = $_.FullName
+    Write-Host "dotnet nuget push $nupkgFile --api-key $nugetApiKey --source $nugetSource" -ForegroundColor Cyan
+}
 
 $confirmPush = Read-Host "是否推送版本[ $newVersion ]到 NuGet?(y/n)"
 # dotnet nuget push "../src/*/bin/Release/*$newVersion.nupkg" --skip-duplicate -k $nugetKeyFilePath --source $nugetSource
