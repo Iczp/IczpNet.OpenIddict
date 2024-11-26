@@ -32,11 +32,13 @@ if (-not $newVersion) {
 }
 
 # 1. 查找并更新项目版本号
+Write-Host "正在查找目录：$projectsPath" -ForegroundColor Cyan
 Write-Host "正在查找 .csproj 文件并更新版本号..." -ForegroundColor Cyan
 Get-ChildItem -Path $projectsPath -Recurse -Filter *.csproj | ForEach-Object {
     $file = $_.FullName
     # 更新 TargetFramework 到 net9.0
     (Get-Content $file) -replace '<TargetFramework>.*<\/TargetFramework>', '<TargetFramework>net9.0</TargetFramework>' | Set-Content $file
+    (Get-Content $file) -replace '<TargetFrameworks>.*<\/TargetFrameworks>', '<TargetFrameworks>net9.0</TargetFrameworks>' | Set-Content $file
     # 更新版本号
     if ((Get-Content $file) -match '<Version>') {
         (Get-Content $file) -replace '<Version>.*<\/Version>', "<Version>$newVersion</Version>" | Set-Content $file
