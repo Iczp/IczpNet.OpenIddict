@@ -18,7 +18,7 @@
     "IczpNet.OpenIddict.DemoApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:44381",
+      "applicationUrl": "https://localhost:44359",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -38,10 +38,10 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
         var query = (await base.CreateFilteredQueryAsync(input))
             //.WhereIf(!input.Name.IsNullOrEmpty(), x => x.Name.Equals(input.Name))
             //.WhereIf(!input.Resources.IsNullOrEmpty(), x => x.Resources.Contains(input.Resources))
-            .WhereIf(input.StartLastModificationTime.HasValue, x => x.LastModificationTime >= input.StartLastModificationTime)
-            .WhereIf(input.EndLastModificationTime.HasValue, x => x.LastModificationTime < input.EndLastModificationTime)
-            .WhereIf(input.StartCreationTime.HasValue, x => x.CreationTime >= input.StartCreationTime)
-            .WhereIf(input.EndCreationTime.HasValue, x => x.CreationTime < input.EndCreationTime)
+            //.WhereIf(input.StartLastModificationTime.HasValue, x => x.LastModificationTime >= input.StartLastModificationTime)
+            //.WhereIf(input.EndLastModificationTime.HasValue, x => x.LastModificationTime < input.EndLastModificationTime)
+            .WhereIf(input.StartCreationTime.HasValue, x => x.CreationDate >= input.StartCreationTime)
+            .WhereIf(input.EndCreationTime.HasValue, x => x.CreationDate < input.EndCreationTime)
             //.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Name.Contains(input.Keyword) || x.DisplayName.Contains(input.Keyword))
             ;
 
