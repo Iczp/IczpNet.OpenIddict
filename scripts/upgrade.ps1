@@ -1,42 +1,38 @@
 # 配置参数
+$defaultVersion = "9.0.0.903"
 $projectsPath = "." # 替换为你的解决方案路径
-$nugetKeyFilePath = "../nuget_apikey.txt" 
-$nugetSource = "https://api.nuget.org/v3/index.json" # NuGet 推送地址
 
 # 检查是否有未提交的 Git 更改
 Write-Host "检查是否有未提交的 Git 更改..." -ForegroundColor Cyan
+
 cd $projectsPath
+
 $gitStatus = git status --porcelain
 if ($gitStatus) {
     Write-Host "检测到未提交的更改，请先提交或暂存以下文件：" -ForegroundColor Red
     Write-Host $gitStatus
     exit 1
-} else {
+}
+else {
     Write-Host "没有未提交的 Git 更改，继续执行脚本。" -ForegroundColor Green
 }
 
-# 从文件读取 NuGet API Key
-if (Test-Path $nugetKeyFilePath) {
-    $nugetApiKey = Get-Content $nugetKeyFilePath -ErrorAction Stop
-    Write-Host "已成功读取 NuGet API Key: $nugetApiKey" -ForegroundColor Green
-} else {
-    Write-Error "未找到 NuGet API Key 文件，请检查路径：$nugetKeyFilePath"
-    exit 1
-}
+
 
 # 手动输入版本号
-# 设置默认版本号
-$defaultVersion = "9.0.0.0"
+
 $newVersion = Read-Host "请输入新的版本号 (例如 $defaultVersion)"
 if (-not $newVersion) {
     $newVersion = $defaultVersion
-    Write-Host "使用版本号: $nugetApiKey" -ForegroundColor Yellow
+    Write-Host "使用版本号: $newVersion" -ForegroundColor Yellow
     # exit 1
 }
 
 # 1. 查找并更新项目版本号
 Write-Host "正在查找目录：$projectsPath" -ForegroundColor Cyan
-Write-Host "正在查找 .csproj 文件并更新版本号..." -ForegroundColor Cyan
+
+Write-Host "正在查找 .csproj 文件并更新版本号[$newVersion]..." -ForegroundColor Cyan
+
 Get-ChildItem -Path $projectsPath -Recurse -Filter *.csproj | ForEach-Object {
     $file = $_.FullName
     # 更新 TargetFramework 到 net9.0
@@ -57,20 +53,41 @@ Get-ChildItem -Path $projectsPath -Recurse -Filter *.csproj | ForEach-Object {
     # }
 }
 
+# Write-Host "所有包升到最新版本" -ForegroundColor Cyan
+
+# Get-ChildItem -Path .\ -Filter *.csproj | ForEach-Object {
+#     $projectPath = $_.FullName
+#     Write-Host "Updating packages for project: $projectPath"
+#     # 获取项目中的所有包
+#     $packages = dotnet list $projectPath package | Select-String -Pattern "^([^ ]+) " | ForEach-Object { $_.Matches[0].Groups[1].Value }
+#     # 遍历每个包并尝试更新到最新版本
+#     foreach ($package in $packages) {
+#         Write-Host "Updating package: $package"
+#         dotnet add $projectPath package $package --version latest
+#     }
+# }
+
 # 2. 还原依赖项并检查构建
+
 Write-Host "还原依赖项并构建项目..." -ForegroundColor Cyan
+
 cd $projectsPath
+
 dotnet restore
+
 if ($?) {
     Write-Host "依赖项还原成功。" -ForegroundColor Green
-} else {
+}
+else {
     Write-Error "依赖项还原失败，请检查项目配置。" 
     exit 1
 }
 
-Write-Host "更新Abp" -ForegroundColor Cyan
-Write-Host "abp update" -ForegroundColor Cyan
-abp update
+# Write-Host "更新Abp" -ForegroundColor Cyan
+# Write-Host "abp update" -ForegroundColor Cyan
+# abp update
+
+
 # dotnet build --configuration Release
 # if ($?) {
 #     Write-Host "项目构建成功。" -ForegroundColor Green
@@ -113,5 +130,9 @@ abp update
 # } else {
 #     Write-Host "推送到 NuGet 源已取消。" -ForegroundColor Yellow
 # }
+
+
+
+
 
 Write-Host "脚本执行完成！" -ForegroundColor Cyan
