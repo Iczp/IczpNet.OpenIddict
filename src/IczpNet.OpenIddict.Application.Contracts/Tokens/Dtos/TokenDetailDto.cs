@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Volo.Abp.Auditing;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.ObjectExtending;
 
 namespace IczpNet.OpenIddict.Tokens.Dtos;
 
-public class TokenDetailDto : TokenDto, IEntityDto<Guid>, IHasCreationTime
+public class TokenDetailDto : TokenDto, IEntityDto<Guid>
 {
 
     //

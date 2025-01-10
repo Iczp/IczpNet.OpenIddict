@@ -82,13 +82,13 @@ public class TokenGetListInput : GetListInput
     /// </summary>
     public virtual DateTime? EndCreationTime { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public virtual DateTime? StartLastModificationTime { get; set; }
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //public virtual DateTime? StartLastModificationTime { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public virtual DateTime? EndLastModificationTime { get; set; }
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //public virtual DateTime? EndLastModificationTime { get; set; }
 }

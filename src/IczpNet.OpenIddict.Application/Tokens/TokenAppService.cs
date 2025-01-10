@@ -1,17 +1,15 @@
-﻿using System;
+﻿using IczpNet.AbpCommons.Dtos;
+using IczpNet.OpenIddict.BaseAppServices;
+using IczpNet.OpenIddict.Permissions;
+using IczpNet.OpenIddict.Tokens.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IczpNet.OpenIddict.Tokens.Dtos;
-using IczpNet.OpenIddict.BaseAppServices;
-using IczpNet.OpenIddict.Permissions;
+using Volo.Abp;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Tokens;
-using Volo.Abp.Application.Dtos;
-using IczpNet.AbpCommons.Dtos;
-using Volo.Abp;
-using Volo.Abp.Localization;
-using Volo.Abp.Reflection;
 
 namespace IczpNet.OpenIddict.Tokens;
 
@@ -45,10 +43,10 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
             .WhereIf(!input.Type.IsNullOrEmpty(), x => x.Type.Equals(input.Type))
             .WhereIf(input.ApplicationId.HasValue, x => x.ApplicationId.Equals(input.ApplicationId))
             .WhereIf(input.AuthorizationId.HasValue, x => x.AuthorizationId.Equals(input.AuthorizationId))
-            .WhereIf(input.StartLastModificationTime.HasValue, x => x.LastModificationTime >= input.StartLastModificationTime)
-            .WhereIf(input.EndLastModificationTime.HasValue, x => x.LastModificationTime < input.EndLastModificationTime)
-            .WhereIf(input.StartCreationTime.HasValue, x => x.CreationTime >= input.StartCreationTime)
-            .WhereIf(input.EndCreationTime.HasValue, x => x.CreationTime < input.EndCreationTime)
+            //.WhereIf(input.StartLastModificationTime.HasValue, x => x.LastModificationTime >= input.StartLastModificationTime)
+            //.WhereIf(input.EndLastModificationTime.HasValue, x => x.LastModificationTime < input.EndLastModificationTime)
+            .WhereIf(input.StartCreationTime.HasValue, x => x.CreationDate >= input.StartCreationTime)
+            .WhereIf(input.EndCreationTime.HasValue, x => x.CreationDate < input.EndCreationTime)
 
             .WhereIf(input.StartCreationDate.HasValue, x => x.CreationDate >= input.StartCreationDate)
             .WhereIf(input.EndCreationDate.HasValue, x => x.CreationDate < input.EndCreationDate)

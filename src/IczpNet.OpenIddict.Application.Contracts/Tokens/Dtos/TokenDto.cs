@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Volo.Abp.Auditing;
+﻿using IczpNet.OpenIddict.Applications.Dtos;
+using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.ObjectExtending;
-using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Tokens.Dtos;
 
-public class TokenDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
+public class TokenDto : ExtensibleObject, IEntityDto<Guid>//, IHasCreationTime
 {
     /// <summary>
     /// 
@@ -39,8 +36,6 @@ public class TokenDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
     // 摘要:
     //     Gets or sets the UTC expiration date of the current token.
     public virtual DateTime? ExpirationDate { get; set; }
-
-
 
     //
     // 摘要:
@@ -75,10 +70,10 @@ public class TokenDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
     //     Gets or sets the type of the current token.
     public virtual string Type { get; set; }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public DateTime CreationTime { get; set; }
+    ///// <summary>
+    ///// 
+    ///// </summary>
+    //public DateTime CreationTime { get; set; }
 
 }
 
