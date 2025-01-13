@@ -68,7 +68,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return query;
     }
 
-    [HttpPost]
+    //[HttpPost]
     public override async Task<ApplicationDetailDto> CreateAsync(ApplicationCreateInput input)
     {
         await CheckCreatePolicyAsync(input);
@@ -83,8 +83,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
              secret: input.ClientSecret,
              grantTypes: input.GrantTypes,
              scopes: input.Scopes,
-             redirectUri: input.RedirectUri,
-             postLogoutRedirectUri: input.PostLogoutRedirectUri,
+             redirectUris: input.RedirectUris,
+             postLogoutRedirectUris: input.PostLogoutRedirectUris,
              clientUri: input.ClientUri,
              logoUri: input.LogoUri,
              permissions: input.Permissions);
@@ -99,7 +99,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return (await ApplicationManager.FindByClientIdAsync(clientId)).As<OpenIddictApplicationModel>();
     }
 
-    [HttpPost]
+    //[HttpPost]
     public override async Task<ApplicationDetailDto> UpdateAsync(Guid id, ApplicationUpdateInput input)
     {
         await CheckUpdatePolicyAsync(id, input);
@@ -114,8 +114,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             secret: application.ClientSecret,//input.ClientSecret,
             grantTypes: input.GrantTypes,
             scopes: input.Scopes,
-            redirectUri: input.RedirectUri,
-            postLogoutRedirectUri: input.PostLogoutRedirectUri,
+            redirectUris: input.RedirectUris,
+            postLogoutRedirectUris: input.PostLogoutRedirectUris,
             clientUri: input.ClientUri,
             logoUri: input.LogoUri,
             permissions: input.Permissions
@@ -126,7 +126,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return await MapToGetOutputDtoAsync(entity);
     }
 
-    [HttpGet]
+    //[HttpGet]
     public virtual async Task<ApplicationDto> GetByClientIdAsync(string clientId)
     {
         await CheckGetPolicyAsync();
@@ -141,7 +141,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         await ApplicationManager.DeleteAsync(await ApplicationManager.FindByIdAsync(id.ToString()));
     }
 
-    [HttpPost]
+    //[HttpPost]
     public virtual async Task DeleteByClientIdAsync(string clientId)
     {
         var app = Assert.NotNull(await FindByClientIdAsync(clientId), $"No such application,clientId:{clientId}");
@@ -149,7 +149,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         await DeleteAsync(app.Id);
     }
 
-    [HttpPost]
+    //[HttpPost]
     public virtual async Task DeleteManyByClientIdAsync(List<string> cliendIds)
     {
         Assert.If(!cliendIds.IsAny(), "cliendIds is null");
@@ -207,7 +207,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return ObjectMapper.Map<OpenIddictApplication, ApplicationSecretDto>(entity);
     }
 
-    [HttpPost]
+    //[HttpPost]
     public virtual async Task<ApplicationSecretDto> SetClientSecretAsync(ApplicationSecretInput input)
     {
         await CheckPolicyAsync(SetClientSecretPolicyName);
@@ -228,7 +228,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         };
     }
 
-    [HttpPost]
+    //[HttpPost]
     public virtual async Task<bool> ValidateClientSecretAsync(ApplicationSecretInput input)
     {
         await CheckPolicyAsync(ValidateClientSecretPolicyName);
@@ -242,7 +242,7 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
         return isValidated;
     }
 
-    [HttpPost]
+    //[HttpPost]
     [AllowAnonymous]
     public virtual async Task<string> GenerateClientSecretAsync(int length = 32)
     {

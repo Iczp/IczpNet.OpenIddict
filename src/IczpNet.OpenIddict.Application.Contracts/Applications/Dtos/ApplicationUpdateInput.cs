@@ -37,12 +37,12 @@ public class ApplicationUpdateInput
     /// <summary>
     /// 
     /// </summary>
-    public virtual string RedirectUri { get; set; }
+    public virtual List<string> RedirectUris { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
-    public virtual string PostLogoutRedirectUri { get; set; }
+    public virtual List<string> PostLogoutRedirectUris { get; set; }
 
     /// <summary>
     /// 

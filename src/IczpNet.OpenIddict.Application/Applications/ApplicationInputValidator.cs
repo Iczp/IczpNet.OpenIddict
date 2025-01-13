@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using IczpNet.AbpCommons.Extensions;
 using IczpNet.OpenIddict.Applications.Dtos;
 using IczpNet.OpenIddict.Localization;
 using System;
@@ -23,17 +24,22 @@ public class ApplicationInputValidator<T> : AbstractValidator<T> where T : Appli
         .Must(BeAValidConsentType)
         .WithMessage($"ConsentType must be one of {OpenIddictConsts.ConsentTypes.JoinAsString(",")}");
 
-        RuleFor(x => x.PostLogoutRedirectUri)
-            .Must(BeAValidUrl)
-            .When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUri))
-            .WithMessage("PostLogoutRedirectUri must be a valid URL when is not null.");
+        //RuleForEach(x => x.PostLogoutRedirectUris)
+        //    .SetValidator(new UriValidator())
+        //    .WithMessage("Each PostLogoutRedirectUri must be a valid URL.");
 
-        RuleFor(x => x.RedirectUri)
+        RuleForEach(x => x.PostLogoutRedirectUris)
             .Must(BeAValidUrl)
-            .When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUri))
-            .WithMessage("RedirectUri must be a valid URL when is not null.");
+            .When(x => x.PostLogoutRedirectUris.IsAny())
+            .WithMessage("Each PostLogoutRedirectUris must be a valid URL when is not null.");
 
-        
+        RuleForEach(x => x.RedirectUris)
+            .Must(BeAValidUrl)
+            //.When(x => !string.IsNullOrEmpty(x.PostLogoutRedirectUris))
+            .When(x => x.RedirectUris.IsAny())
+            .WithMessage("Each RedirectUris must be a valid URL when is not null.");
+
+
     }
 
     protected virtual bool BeAValidType(string type)
