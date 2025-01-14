@@ -70,18 +70,18 @@ public abstract class CrudOpenIddictAppService<TEntity, TGetOutputDto, TGetListO
     //    return await GetPagedListAsync(query, input);
     //}
 
-    [HttpPost]
+    //[HttpPost]
     public override Task<TGetOutputDto> UpdateAsync(TKey id, TUpdateInput input)
     {
         return base.UpdateAsync(id, input);
     }
 
-    [HttpPost]
+    //[HttpPost]
     public override Task DeleteAsync(TKey id)
     {
         return base.DeleteAsync(id);
     }
-    [HttpPost]
+    //[HttpPost]
     public override Task DeleteManyAsync(List<TKey> idList)
     {
         return base.DeleteManyAsync(idList);

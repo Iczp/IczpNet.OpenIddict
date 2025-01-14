@@ -116,8 +116,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
        string secret,
        List<string> grantTypes,
        List<string> scopes,
-       string redirectUri = null,
-       string postLogoutRedirectUri = null,
+       List<string> redirectUris = null,
+       List<string> postLogoutRedirectUris = null,
        string clientUri = null,
        string logoUri = null,
        List<string> permissions = null, CancellationToken cancellationToken = default)
@@ -148,7 +148,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         Check.NotNullOrEmpty(scopes, nameof(scopes));
 
-        SetLogoutPermission(descriptor.Permissions, !redirectUri.IsNullOrWhiteSpace() || !postLogoutRedirectUri.IsNullOrWhiteSpace());
+        SetLogoutPermission(descriptor.Permissions, (redirectUris.IsAny() && redirectUris.Any(x => x.IsNullOrWhiteSpace()))
+            || (postLogoutRedirectUris.IsAny() && postLogoutRedirectUris.Any(x => x.IsNullOrWhiteSpace())));
 
         SetCodePermission(descriptor.Permissions, type, grantTypes);
 
@@ -156,9 +157,9 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         SetScopes(descriptor.Permissions, scopes);
 
-        SetUris(descriptor.RedirectUris, [redirectUri], "InvalidRedirectUri");
+        SetUris(descriptor.RedirectUris, redirectUris, "InvalidRedirectUri");
 
-        SetUris(descriptor.PostLogoutRedirectUris, [postLogoutRedirectUri], "InvalidPostLogoutRedirectUri");
+        SetUris(descriptor.PostLogoutRedirectUris, postLogoutRedirectUris, "InvalidPostLogoutRedirectUri");
 
         await UpdatePermissionAsync(descriptor.ClientId, permissions);
 
@@ -166,7 +167,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
     }
 
-    private void SetCodePermission(HashSet<string> permissions, string type, List<string> grantTypes)
+    private static void SetCodePermission(HashSet<string> permissions, string type, List<string> grantTypes)
     {
         if (new[] { OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.Implicit }.All(grantTypes.Contains))
         {
@@ -180,7 +181,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         }
     }
 
-    private void SetLogoutPermission(HashSet<string> permissions, bool isHas)
+    private static void SetLogoutPermission(HashSet<string> permissions, bool isHas)
     {
         if (isHas)
         {
@@ -192,7 +193,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         }
     }
 
-    private HashSet<string> SetScopes(HashSet<string> permissions, List<string> scopes)
+    private static HashSet<string> SetScopes(HashSet<string> permissions, List<string> scopes)
     {
         var buildInScopes = new[]
         {
@@ -220,6 +221,11 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     {
         uris.Clear();
 
+        if (!urls.IsAny())
+        {
+            return [];
+        }
+
         foreach (var url in urls)
         {
             if (url.IsNullOrEmpty())
@@ -238,7 +244,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         return uris;
     }
 
-    private HashSet<string> SetGrantTypes(HashSet<string> permissions, string type, List<string> grantTypes)
+    private static HashSet<string> SetGrantTypes(HashSet<string> permissions, string type, List<string> grantTypes)
     {
         if (!grantTypes.IsAny())
         {
@@ -331,8 +337,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     string secret,
     List<string> grantTypes,
     List<string> scopes,
-    string redirectUri = null,
-    string postLogoutRedirectUri = null,
+    List<string> redirectUris = null,
+    List<string> postLogoutRedirectUris = null,
     string clientUri = null,
     string logoUri = null,
     List<string> permissions = null,
@@ -340,7 +346,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     {
         var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
 
-        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUri, postLogoutRedirectUri, clientUri, logoUri, permissions, cancellationToken);
+        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUris, postLogoutRedirectUris, clientUri, logoUri, permissions, cancellationToken);
     }
 
 
@@ -352,8 +358,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     string secret,
     List<string> grantTypes,
     List<string> scopes,
-    string redirectUri = null,
-    string postLogoutRedirectUri = null,
+    List<string> redirectUris = null,
+    List<string> postLogoutRedirectUris = null,
     string clientUri = null,
     string logoUri = null,
     List<string> permissions = null,
@@ -394,7 +400,9 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
 
         descriptor.Permissions.Clear();
 
-        SetLogoutPermission(descriptor.Permissions, !redirectUri.IsNullOrWhiteSpace() || !postLogoutRedirectUri.IsNullOrWhiteSpace());
+        SetLogoutPermission(descriptor.Permissions,
+            (redirectUris.IsAny() && redirectUris.Any(x => x.IsNullOrWhiteSpace()))
+            || (postLogoutRedirectUris.IsAny() && postLogoutRedirectUris.Any(x => x.IsNullOrWhiteSpace())));
 
         SetCodePermission(descriptor.Permissions, type, grantTypes);
 
@@ -405,10 +413,10 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         SetScopes(descriptor.Permissions, scopes);
 
         // 更新重定向 URI
-        SetUris(descriptor.RedirectUris, [redirectUri], "InvalidRedirectUri");
+        SetUris(descriptor.RedirectUris, redirectUris, "InvalidRedirectUri");
 
         // 更新登出后重定向 URI
-        SetUris(descriptor.PostLogoutRedirectUris, [postLogoutRedirectUri], "InvalidPostLogoutRedirectUri");
+        SetUris(descriptor.PostLogoutRedirectUris, postLogoutRedirectUris, "InvalidPostLogoutRedirectUri");
 
         // 更新权限
         await UpdatePermissionAsync(descriptor.ClientId, permissions);

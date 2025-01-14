@@ -47,7 +47,7 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
         return query;
     }
 
-    [HttpPost]
+    //[HttpPost]
     public override async Task<ScopeDetailDto> CreateAsync(ScopeCreateInput input)
     {
         await CheckCreatePolicyAsync(input);
@@ -64,13 +64,13 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
         return await MapToGetOutputDtoAsync(entity);
     }
 
-    [HttpPost]
+    //[HttpPost]
     public override async Task<ScopeDetailDto> UpdateAsync(Guid id, ScopeUpdateInput input)
     {
         return await base.UpdateAsync(id, input);
     }
 
-    [HttpGet]
+    //[HttpGet]
     public async Task<ScopeDto> GetByNameAsync([Required] string name)
     {
         await CheckGetPolicyAsync();
@@ -85,7 +85,7 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
         return (await ScopeManager.FindByNameAsync(name)).As<OpenIddictScopeModel>();
     }
 
-    [HttpPost]
+    //[HttpPost]
     public async Task DeleteByNameAsync(string name)
     {
         var app = Assert.NotNull(await FindByNameAsync(name), $"No such scope,name:{name}");
@@ -98,7 +98,7 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
         await ScopeManager.DeleteAsync(await ScopeManager.FindByIdAsync(id.ToString()));
     }
 
-    [HttpPost]
+    //[HttpPost]
     public async Task DeleteManyByNameAsync(List<string> names)
     {
         Assert.If(!names.IsAny(), "names is null");
