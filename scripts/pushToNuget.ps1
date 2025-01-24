@@ -1,4 +1,4 @@
-$defaultVersion = "9.0.1.903"
+$defaultVersion = "9.0.2.903"
 
 $solutionFiles = Get-Item -Path ".\*.sln"
 
