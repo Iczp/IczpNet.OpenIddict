@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons;
+using IczpNet.AbpCommons;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
@@ -18,6 +18,7 @@ using Volo.Abp.Localization;
 using Volo.Abp.DependencyInjection;
 using System.Threading;
 using IczpNet.AbpCommons.Extensions;
+using Volo.Abp.EventBus.Distributed;
 
 namespace IczpNet.OpenIddict.Applications;
 
@@ -75,9 +76,10 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         IOpenIddictApplicationCache<OpenIddictApplicationModel> cache,
         ILogger<AbpApplicationManager> logger,
         IOptionsMonitor<OpenIddictCoreOptions> options,
-        IOpenIddictApplicationStoreResolver resolver,
+        IOpenIddictApplicationStore<OpenIddictApplicationModel> store,
         AbpOpenIddictIdentifierConverter identifierConverter,
-        IPermissionDataSeeder permissionDataSeeder) : base(cache, logger, options, resolver, identifierConverter)
+        IDistributedEventBus distributedEventBus,
+        IPermissionDataSeeder permissionDataSeeder) : base(cache, logger, options, store, identifierConverter, distributedEventBus)
     {
         PermissionDataSeeder = permissionDataSeeder;
     }
@@ -185,11 +187,11 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     {
         if (isHas)
         {
-            permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
+            permissions.Add(OpenIddictConstants.Permissions.Endpoints.EndSession);
         }
         else
         {
-            permissions.Remove(OpenIddictConstants.Permissions.Endpoints.Logout);
+            permissions.Remove(OpenIddictConstants.Permissions.Endpoints.EndSession);
         }
     }
 
@@ -308,7 +310,7 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
             if (grantType == OpenIddictConstants.GrantTypes.DeviceCode)
             {
                 permissions.Add(OpenIddictConstants.Permissions.GrantTypes.DeviceCode);
-                permissions.Add(OpenIddictConstants.Permissions.Endpoints.Device);
+                permissions.Add(OpenIddictConstants.Permissions.Endpoints.DeviceAuthorization);
             }
 
             if (grantType == OpenIddictConstants.GrantTypes.Implicit)

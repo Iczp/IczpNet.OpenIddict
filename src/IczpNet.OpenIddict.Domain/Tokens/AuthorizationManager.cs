@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
@@ -15,9 +15,9 @@ public class TokenManager : AbpTokenManager, ITokenManager
         IOpenIddictTokenCache<OpenIddictTokenModel> cache,
         ILogger<OpenIddictTokenManager<OpenIddictTokenModel>> logger,
         IOptionsMonitor<OpenIddictCoreOptions> options,
-        IOpenIddictTokenStoreResolver resolver,
+        IOpenIddictTokenStore<OpenIddictTokenModel> store,
         AbpOpenIddictIdentifierConverter identifierConverter,
-        IOpenIddictTokenManager openIddictTokenManager) : base(cache, logger, options, resolver, identifierConverter)
+        IOpenIddictTokenManager openIddictTokenManager) : base(cache, logger, options, store, identifierConverter)
     {
         OpenIddictTokenManager = openIddictTokenManager;
     }

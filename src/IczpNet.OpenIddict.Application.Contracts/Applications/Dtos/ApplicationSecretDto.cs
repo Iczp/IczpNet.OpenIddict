@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Volo.Abp.Application.Dtos;
 
 namespace IczpNet.OpenIddict.Applications.Dtos;
@@ -9,5 +9,7 @@ public class ApplicationSecretDto : ApplicationSecretInput, IEntityDto<Guid>
     /// 
     /// </summary>
     public Guid Id { get; set; }
+
+    public virtual string GetObjectKey() => Id.ToString();
 }
 

@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons;
+using IczpNet.AbpCommons;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,9 +23,9 @@ public class ScopeManager : AbpScopeManager, IScopeManager
         IOpenIddictScopeCache<OpenIddictScopeModel> cache,
         ILogger<OpenIddictScopeManager<OpenIddictScopeModel>> logger,
         IOptionsMonitor<OpenIddictCoreOptions> options,
-        IOpenIddictScopeStoreResolver resolver,
+        IOpenIddictScopeStore<OpenIddictScopeModel> store,
         AbpOpenIddictIdentifierConverter identifierConverter,
-        IOpenIddictScopeManager openIddictScopeManager) : base(cache, logger, options, resolver, identifierConverter)
+        IOpenIddictScopeManager openIddictScopeManager) : base(cache, logger, options, store, identifierConverter)
     {
         OpenIddictScopeManager = openIddictScopeManager;
     }

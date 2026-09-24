@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Volo.Abp.Auditing;
@@ -7,13 +7,8 @@ using Volo.Abp.ObjectExtending;
 
 namespace IczpNet.OpenIddict.Scopes.Dtos;
 
-public class ScopeDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
+public class ScopeDto : ExtensibleEntityDto<Guid>, IHasCreationTime
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// Gets or sets the unique name associated with the current scope.
     /// </summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Auditing;
@@ -6,10 +6,8 @@ using Volo.Abp.ObjectExtending;
 
 namespace IczpNet.OpenIddict.Applications.Dtos;
 
-public class ApplicationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
+public class ApplicationDto : ExtensibleEntityDto<Guid>, IHasCreationTime
 {
-
-    public Guid Id { get; set; }
     /// <summary>
     /// Gets or sets the client identifier associated with the application.
     /// </summary>

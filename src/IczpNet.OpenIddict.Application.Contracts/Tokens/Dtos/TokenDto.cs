@@ -1,17 +1,12 @@
-﻿using IczpNet.OpenIddict.Applications.Dtos;
+using IczpNet.OpenIddict.Applications.Dtos;
 using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.ObjectExtending;
 
 namespace IczpNet.OpenIddict.Tokens.Dtos;
 
-public class TokenDto : ExtensibleObject, IEntityDto<Guid>//, IHasCreationTime
+public class TokenDto : ExtensibleEntityDto<Guid>//, IHasCreationTime
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public Guid Id { get; set; }
-
     //
     // 摘要:
     //     Gets or sets the application associated with the current token.

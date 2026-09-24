@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Core;
@@ -16,9 +16,9 @@ public class AuthorizationManager : AbpAuthorizationManager, IAuthorizationManag
         IOpenIddictAuthorizationCache<OpenIddictAuthorizationModel> cache,
         ILogger<OpenIddictAuthorizationManager<OpenIddictAuthorizationModel>> logger,
         IOptionsMonitor<OpenIddictCoreOptions> options,
-        IOpenIddictAuthorizationStoreResolver resolver,
+        IOpenIddictAuthorizationStore<OpenIddictAuthorizationModel> store,
         AbpOpenIddictIdentifierConverter identifierConverter,
-        IOpenIddictAuthorizationManager openIddictAuthorizationManager) : base(cache, logger, options, resolver, identifierConverter)
+        IOpenIddictAuthorizationManager openIddictAuthorizationManager) : base(cache, logger, options, store, identifierConverter)
     {
         OpenIddictAuthorizationManager = openIddictAuthorizationManager;
     }

@@ -1,4 +1,4 @@
-using IczpNet.OpenIddict.EntityFrameworkCore;
+﻿using IczpNet.OpenIddict.EntityFrameworkCore;
 using IczpNet.OpenIddict.MultiTenancy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;

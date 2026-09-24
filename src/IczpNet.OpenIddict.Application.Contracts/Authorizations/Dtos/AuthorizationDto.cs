@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Volo.Abp.Auditing;
 using Volo.Abp.Application.Dtos;
@@ -8,13 +8,8 @@ using IczpNet.OpenIddict.Applications.Dtos;
 
 namespace IczpNet.OpenIddict.Authorizations.Dtos;
 
-public class AuthorizationDto : ExtensibleObject, IEntityDto<Guid>, IHasCreationTime
+public class AuthorizationDto : ExtensibleEntityDto<Guid>, IHasCreationTime
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public Guid Id { get; set; }
-
     /// <summary>
     /// Gets or sets the application associated with the current authorization.
     /// </summary>
