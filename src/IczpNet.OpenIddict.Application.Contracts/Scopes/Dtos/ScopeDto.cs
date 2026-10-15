@@ -50,6 +50,11 @@ public class ScopeDto : ExtensibleEntityDto<Guid>, IHasCreationTime
     public virtual List<string> Resources { get; set; }
 
     /// <summary>
+    /// Gets or sets the claims associated with the current scope.
+    /// </summary>
+    public virtual List<string> Claims { get; set; } = [];
+
+    /// <summary>
     /// 
     /// </summary>
     public DateTime CreationTime { get; set; }

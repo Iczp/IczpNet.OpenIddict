@@ -1,4 +1,5 @@
-﻿using Volo.Abp.ObjectMapping;
+using System;
+using Volo.Abp.ObjectMapping;
 using OpenIddict.Abstractions;
 using Volo.Abp.OpenIddict.Applications;
 using Volo.Abp.DependencyInjection;
@@ -20,7 +21,7 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
 
         var permissions = JsonHelper.ParseToList(source.Permissions) ?? [];
 
-        return new T()
+        var result = new T()
         {
             Id = source.Id,
             ClientId = source.ClientId,
@@ -43,6 +44,10 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
             LogoUri = source.LogoUri,
             CreationTime = source.CreationTime,
         };
+
+        MapSettings(source.Settings, result);
+
+        return result;
     }
 
     private static List<string> GetPart(List<string> permissions, string prefixe)
@@ -82,6 +87,57 @@ public class ApplicationToDtoMapper<T> : IObjectMapper<OpenIddictApplication, T>
         destination.LogoUri = source.LogoUri;
         destination.CreationTime = source.CreationTime;
 
+        MapSettings(source.Settings, destination);
+
         return destination;
+    }
+
+    private static void MapSettings(string settingsJson, ApplicationDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(settingsJson))
+        {
+            return;
+        }
+
+        try
+        {
+            var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(settingsJson);
+            if (dict != null)
+            {
+                if (dict.TryGetValue(OpenIddictConstants.Settings.TokenLifetimes.AccessToken, out var act) && TimeSpan.TryParse(act, out var actTs))
+                {
+                    dto.AccessTokenLifetime = (int)actTs.TotalSeconds;
+                }
+
+                if (dict.TryGetValue(OpenIddictConstants.Settings.TokenLifetimes.IdentityToken, out var idt) && TimeSpan.TryParse(idt, out var idtTs))
+                {
+                    dto.IdentityTokenLifetime = (int)idtTs.TotalSeconds;
+                }
+
+                if (dict.TryGetValue(OpenIddictConstants.Settings.TokenLifetimes.RefreshToken, out var reft) && TimeSpan.TryParse(reft, out var reftTs))
+                {
+                    dto.RefreshTokenLifetime = (int)reftTs.TotalSeconds;
+                }
+
+                if (dict.TryGetValue(OpenIddictConstants.Settings.TokenLifetimes.AuthorizationCode, out var auc) && TimeSpan.TryParse(auc, out var aucTs))
+                {
+                    dto.AuthorizationCodeLifetime = (int)aucTs.TotalSeconds;
+                }
+
+                if (dict.TryGetValue(OpenIddictConstants.Settings.TokenLifetimes.DeviceCode, out var dvc) && TimeSpan.TryParse(dvc, out var dvcTs))
+                {
+                    dto.DeviceCodeLifetime = (int)dvcTs.TotalSeconds;
+                }
+
+                if (dict.TryGetValue("AllowedCorsOrigins", out var cors) && !string.IsNullOrWhiteSpace(cors))
+                {
+                    dto.AllowedCorsOrigins = cors.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+                }
+            }
+        }
+        catch
+        {
+            // Ignore settings deserialization failure
+        }
     }
 }

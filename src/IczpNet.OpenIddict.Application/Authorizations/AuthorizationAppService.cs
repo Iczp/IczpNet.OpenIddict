@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,9 +6,11 @@ using IczpNet.OpenIddict.Authorizations.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
 using IczpNet.AbpCommons.Dtos;
 using IczpNet.OpenIddict.Permissions;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.OpenIddict.Authorizations;
+using IczpNet.OpenIddict.Tokens;
 
 namespace IczpNet.OpenIddict.Authorizations;
 
@@ -24,12 +26,15 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
     protected virtual string GetApplicationIdListPolicyName { get; set; } = OpenIddictPermissions.TokenPermissions.GetApplicationIdList;
 
     protected IAuthorizationManager AuthorizationManager { get; set; }
+    protected ITokenManager TokenManager { get; set; }
 
     public AuthorizationAppService(
         IRepository<OpenIddictAuthorization, Guid> repository,
-        IAuthorizationManager authorizationManager) : base(repository)
+        IAuthorizationManager authorizationManager,
+        ITokenManager tokenManager) : base(repository)
     {
         AuthorizationManager = authorizationManager;
+        TokenManager = tokenManager;
     }
 
 
@@ -70,6 +75,45 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
         return await GetEntityGroupListAsync(
             q => q.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Status.StartsWith(input.Keyword)),
             input, GetApplicationIdListPolicyName, x => x.ApplicationId);
+    }
+
+    /// <summary>
+    /// 主动吊销授权（并级联吊销关联的令牌）
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    public virtual async Task RevokeAsync(Guid id)
+    {
+        await CheckPolicyAsync(OpenIddictPermissions.AuthorizationPermissions.Revoke);
+
+        var auth = await AuthorizationManager.FindByIdAsync(id.ToString());
+        if (auth == null)
+        {
+            throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(OpenIddictAuthorization), id);
+        }
+
+        await AuthorizationManager.TryRevokeAsync(auth);
+
+        // 级联吊销关联的令牌
+        await TokenManager.RevokeByAuthorizationIdAsync(id.ToString());
+    }
+
+    /// <summary>
+    /// 批量吊销授权
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    public virtual async Task RevokeManyAsync(List<Guid> ids)
+    {
+        await CheckPolicyAsync(OpenIddictPermissions.AuthorizationPermissions.Revoke);
+        Check.NotNullOrEmpty(ids, nameof(ids));
+
+        foreach (var id in ids)
+        {
+            await RevokeAsync(id);
+        }
     }
 
 }

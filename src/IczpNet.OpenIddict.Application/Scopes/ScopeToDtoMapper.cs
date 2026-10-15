@@ -1,4 +1,4 @@
-﻿using Volo.Abp.ObjectMapping;
+using Volo.Abp.ObjectMapping;
 using Volo.Abp.OpenIddict.Scopes;
 using Volo.Abp.DependencyInjection;
 using System.Collections.Generic;
@@ -29,6 +29,7 @@ public class ScopeToDtoMapper<T> : IObjectMapper<OpenIddictScope, T>, ITransient
             Descriptions = source.Descriptions,
             DisplayNames = source.DisplayNames,
             Resources = resources,
+            Claims = ExtractClaims(source.Properties),
             Properties = source.Properties,
             CreationTime = source.CreationTime,
         };
@@ -57,9 +58,40 @@ public class ScopeToDtoMapper<T> : IObjectMapper<OpenIddictScope, T>, ITransient
         destination.Descriptions = source.Descriptions;
         destination.DisplayNames = source.DisplayNames;
         destination.Resources = permissions;
+        destination.Claims = ExtractClaims(source.Properties);
         destination.Properties = source.Properties;
         destination.CreationTime = source.CreationTime;
 
         return destination;
+    }
+
+    private static List<string> ExtractClaims(string propertiesJson)
+    {
+        if (string.IsNullOrWhiteSpace(propertiesJson))
+        {
+            return [];
+        }
+
+        try
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(propertiesJson);
+            if (doc.RootElement.TryGetProperty("Claims", out var claimsElem) && claimsElem.ValueKind == System.Text.Json.JsonValueKind.Array)
+            {
+                var list = new List<string>();
+                foreach (var item in claimsElem.EnumerateArray())
+                {
+                    var str = item.GetString();
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        list.Add(str);
+                    }
+                }
+                return list;
+            }
+        }
+        catch
+        {
+        }
+        return [];
     }
 }

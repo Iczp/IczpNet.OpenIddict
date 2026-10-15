@@ -122,7 +122,9 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
        List<string> postLogoutRedirectUris = null,
        string clientUri = null,
        string logoUri = null,
-       List<string> permissions = null, CancellationToken cancellationToken = default)
+       List<string> permissions = null,
+       ApplicationSettingsDto settings = null,
+       CancellationToken cancellationToken = default)
     {
         Assert.If(string.IsNullOrEmpty(name), $"client_id  required");
 
@@ -162,6 +164,8 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         SetUris(descriptor.RedirectUris, redirectUris, "InvalidRedirectUri");
 
         SetUris(descriptor.PostLogoutRedirectUris, postLogoutRedirectUris, "InvalidPostLogoutRedirectUri");
+
+        SetSettings(descriptor, settings);
 
         await UpdatePermissionAsync(descriptor.ClientId, permissions);
 
@@ -332,40 +336,42 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
     }
 
     public virtual async ValueTask<OpenIddictApplicationModel> UpdateAsync(
-    [NotNull] Guid identifier,
-    [NotNull] string type,
-    [NotNull] string consentType,
-    string displayName,
-    string secret,
-    List<string> grantTypes,
-    List<string> scopes,
-    List<string> redirectUris = null,
-    List<string> postLogoutRedirectUris = null,
-    string clientUri = null,
-    string logoUri = null,
-    List<string> permissions = null,
-    CancellationToken cancellationToken = default)
+        [NotNull] Guid identifier,
+        [NotNull] string type,
+        [NotNull] string consentType,
+        string displayName,
+        string secret,
+        List<string> grantTypes,
+        List<string> scopes,
+        List<string> redirectUris = null,
+        List<string> postLogoutRedirectUris = null,
+        string clientUri = null,
+        string logoUri = null,
+        List<string> permissions = null,
+        ApplicationSettingsDto settings = null,
+        CancellationToken cancellationToken = default)
     {
         var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
 
-        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUris, postLogoutRedirectUris, clientUri, logoUri, permissions, cancellationToken);
+        return await UpdateAsync(applcation, type, consentType, displayName, secret, grantTypes, scopes, redirectUris, postLogoutRedirectUris, clientUri, logoUri, permissions, settings, cancellationToken);
     }
 
 
     public virtual async ValueTask<OpenIddictApplicationModel> UpdateAsync(
-    OpenIddictApplicationModel applcation,
-    [NotNull] string type,
-    [NotNull] string consentType,
-    string displayName,
-    string secret,
-    List<string> grantTypes,
-    List<string> scopes,
-    List<string> redirectUris = null,
-    List<string> postLogoutRedirectUris = null,
-    string clientUri = null,
-    string logoUri = null,
-    List<string> permissions = null,
-    CancellationToken cancellationToken = default)
+        OpenIddictApplicationModel applcation,
+        [NotNull] string type,
+        [NotNull] string consentType,
+        string displayName,
+        string secret,
+        List<string> grantTypes,
+        List<string> scopes,
+        List<string> redirectUris = null,
+        List<string> postLogoutRedirectUris = null,
+        string clientUri = null,
+        string logoUri = null,
+        List<string> permissions = null,
+        ApplicationSettingsDto settings = null,
+        CancellationToken cancellationToken = default)
     {
         // 查找现有应用程序
         //var applcation = await FindByIdAsync(identifier.ToString(), cancellationToken);
@@ -420,6 +426,9 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         // 更新登出后重定向 URI
         SetUris(descriptor.PostLogoutRedirectUris, postLogoutRedirectUris, "InvalidPostLogoutRedirectUri");
 
+        // 更新设置（生命周期、CORS等）
+        SetSettings(descriptor, settings);
+
         // 更新权限
         await UpdatePermissionAsync(descriptor.ClientId, permissions);
 
@@ -432,6 +441,44 @@ public class ApplicationManager : AbpApplicationManager, IApplicationManager
         await UpdateAsync(applcation, cancellationToken);
 
         return applcation;
+    }
+
+    private static void SetSettings(OpenIddictApplicationDescriptor descriptor, ApplicationSettingsDto settings)
+    {
+        if (settings == null)
+        {
+            return;
+        }
+
+        if (settings.AccessTokenLifetime.HasValue)
+        {
+            descriptor.SetAccessTokenLifetime(TimeSpan.FromSeconds(settings.AccessTokenLifetime.Value));
+        }
+
+        if (settings.IdentityTokenLifetime.HasValue)
+        {
+            descriptor.SetIdentityTokenLifetime(TimeSpan.FromSeconds(settings.IdentityTokenLifetime.Value));
+        }
+
+        if (settings.RefreshTokenLifetime.HasValue)
+        {
+            descriptor.SetRefreshTokenLifetime(TimeSpan.FromSeconds(settings.RefreshTokenLifetime.Value));
+        }
+
+        if (settings.AuthorizationCodeLifetime.HasValue)
+        {
+            descriptor.SetAuthorizationCodeLifetime(TimeSpan.FromSeconds(settings.AuthorizationCodeLifetime.Value));
+        }
+
+        if (settings.DeviceCodeLifetime.HasValue)
+        {
+            descriptor.SetDeviceCodeLifetime(TimeSpan.FromSeconds(settings.DeviceCodeLifetime.Value));
+        }
+
+        if (settings.AllowedCorsOrigins != null && settings.AllowedCorsOrigins.Count > 0)
+        {
+            descriptor.Settings["AllowedCorsOrigins"] = string.Join(",", settings.AllowedCorsOrigins);
+        }
     }
 
     /// <summary>

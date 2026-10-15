@@ -32,7 +32,13 @@ public class ScopeManager : AbpScopeManager, IScopeManager
 
 
 
-    public virtual async Task<OpenIddictScopeModel> CreateAsync(string name, string displayName, List<string> resources, CancellationToken cancellationToken = default)
+    public virtual async Task<OpenIddictScopeModel> CreateAsync(
+        string name,
+        string displayName,
+        List<string> resources,
+        string description = null,
+        List<string> claims = null,
+        CancellationToken cancellationToken = default)
     {
         var scope = await OpenIddictScopeManager.FindByNameAsync(name, cancellationToken);
 
@@ -42,49 +48,77 @@ public class ScopeManager : AbpScopeManager, IScopeManager
         {
             Name = name,
             DisplayName = displayName,
+            Description = description,
         };
 
         scopeDescriptor.Resources.Clear();
 
-        foreach (var resource in resources)
+        if (resources != null)
         {
-            if (scopeDescriptor.Resources.All(x => x != resource))
+            foreach (var resource in resources)
             {
-                scopeDescriptor.Resources.Add(resource);
+                if (scopeDescriptor.Resources.All(x => x != resource))
+                {
+                    scopeDescriptor.Resources.Add(resource);
+                }
             }
+        }
+
+        if (claims != null && claims.Count > 0)
+        {
+            scopeDescriptor.Properties["Claims"] = System.Text.Json.JsonSerializer.SerializeToElement(claims);
         }
 
         return (await OpenIddictScopeManager.CreateAsync(scopeDescriptor, cancellationToken)).As<OpenIddictScopeModel>();
     }
 
-    public async ValueTask<OpenIddictScopeModel> UpdateAsync([NotNull] Guid identifier, [NotNull] string name, string displayName, List<string> resources, CancellationToken cancellationToken = default)
+    public async ValueTask<OpenIddictScopeModel> UpdateAsync(
+        [NotNull] Guid identifier,
+        [NotNull] string name,
+        string displayName,
+        List<string> resources,
+        string description = null,
+        List<string> claims = null,
+        CancellationToken cancellationToken = default)
     {
         var scope = await OpenIddictScopeManager.FindByIdAsync(identifier.ToString(), cancellationToken);
 
-        return await UpdateAsync(scope.As<OpenIddictScopeModel>(), name, displayName, resources, cancellationToken);
+        return await UpdateAsync(scope.As<OpenIddictScopeModel>(), name, displayName, resources, description, claims, cancellationToken);
     }
 
-    public async ValueTask<OpenIddictScopeModel> UpdateAsync(OpenIddictScopeModel scope, [NotNull] string name, string displayName, List<string> resources, CancellationToken cancellationToken = default)
+    public async ValueTask<OpenIddictScopeModel> UpdateAsync(
+        OpenIddictScopeModel scope,
+        [NotNull] string name,
+        string displayName,
+        List<string> resources,
+        string description = null,
+        List<string> claims = null,
+        CancellationToken cancellationToken = default)
     {
-
         var descriptor = new OpenIddictScopeDescriptor();
 
         await PopulateAsync(descriptor, scope, cancellationToken);
 
-        descriptor.Resources.Clear();
-
-        //scope.Name = name;
-
         scope.DisplayName = displayName;
+        descriptor.DisplayName = displayName;
+        descriptor.Description = description;
 
         descriptor.Resources.Clear();
 
-        foreach (var resource in resources)
+        if (resources != null)
         {
-            if (descriptor.Resources.All(x => x != resource))
+            foreach (var resource in resources)
             {
-                descriptor.Resources.Add(resource);
+                if (descriptor.Resources.All(x => x != resource))
+                {
+                    descriptor.Resources.Add(resource);
+                }
             }
+        }
+
+        if (claims != null)
+        {
+            descriptor.Properties["Claims"] = System.Text.Json.JsonSerializer.SerializeToElement(claims);
         }
 
         await PopulateAsync(scope, descriptor, cancellationToken);

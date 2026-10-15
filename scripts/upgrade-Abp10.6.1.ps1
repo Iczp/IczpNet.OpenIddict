@@ -31,9 +31,10 @@ param (
     [string]$ProjectsPath = "",
     [string]$AbpVersion = "10.6.1",
     [string]$TargetFramework = "net10.0",
-    [string]$DotNetVersion = "10.0.9",
+    [string]$DotNetVersion = "10.0.12",
     [string]$MigrationName = "",
-    [switch]$SkipGitCheck = $false
+    [switch]$SkipGitCheck = $false,
+    [switch]$AutoConfirm = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -56,6 +57,8 @@ if ([string]::IsNullOrWhiteSpace($ProjectsPath)) {
     $ProjectsPath = (Resolve-Path $ProjectsPath).Path
 }
 
+Set-Location $ProjectsPath
+
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host "          ABP 解决方案通用升级工具 (.NET 10)" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
@@ -66,7 +69,7 @@ Write-Host "迁移名称  : $MigrationName" -ForegroundColor Gray
 # -------------------------------------------------------------------------
 # 2. 检查 Git 状态
 # -------------------------------------------------------------------------
-if (-not $SkipGitCheck) {
+if (-not $SkipGitCheck -and -not $AutoConfirm) {
     Write-Host "`n[准备工作] 检查 Git 状态..." -ForegroundColor Cyan
     Set-Location $ProjectsPath
     $gitInstalled = Get-Command "git" -ErrorAction SilentlyContinue
@@ -101,16 +104,21 @@ if (Test-Path $commonPropsPath) {
     }
 }
 
-$inputVersion = Read-Host "请输入新的模块自定义版本号 [直接回车默认: $detectedVersion]"
-if ([string]::IsNullOrWhiteSpace($inputVersion)) {
+if ($AutoConfirm) {
     $newVersion = $detectedVersion
+    Write-Host "自动确认模式：使用版本号 $newVersion" -ForegroundColor Yellow
 } else {
-    $newVersion = $inputVersion
+    $inputVersion = Read-Host "请输入新的模块自定义版本号 [直接回车默认: $detectedVersion]"
+    if ([string]::IsNullOrWhiteSpace($inputVersion)) {
+        $newVersion = $detectedVersion
+    } else {
+        $newVersion = $inputVersion
+    }
 }
 
 # 收集待更新的 csproj 与 props 文件
 $csprojFiles = Get-ChildItem -Path $ProjectsPath -Recurse -Filter *.csproj -File
-$propsFiles = Get-ChildItem -Path $ProjectsPath -Recurse -Include "common.props", "Directory.Build.props" -File
+$propsFiles = Get-ChildItem -Path $ProjectsPath -Recurse -Filter "*props" -File | Where-Object { $_.Name -in @("common.props", "Directory.Build.props") }
 
 # 统计分析每个项目的当前框架
 $planProjectList = @()
@@ -192,10 +200,14 @@ Write-Host "   [步骤 6] 生成并输出各个迁移工程的人工升级命令
 Write-Host "==========================================================" -ForegroundColor Magenta
 
 # 用户最终确认
-$confirmPlan = Read-Host "`n是否确认上述升级计划并开始执行？[Y/n]"
-if ($confirmPlan -eq "n" -or $confirmPlan -eq "N") {
-    Write-Host "已取消升级计划，未修改任何文件。" -ForegroundColor Yellow
-    exit 0
+if ($AutoConfirm) {
+    Write-Host "`n自动确认模式：已确认升级计划，开始执行..." -ForegroundColor Green
+} else {
+    $confirmPlan = Read-Host "`n是否确认上述升级计划并开始执行？[Y/n]"
+    if ($confirmPlan -eq "n" -or $confirmPlan -eq "N") {
+        Write-Host "已取消升级计划，未修改任何文件。" -ForegroundColor Yellow
+        exit 0
+    }
 }
 
 Write-Host "`n开始执行升级计划..." -ForegroundColor Green
@@ -255,9 +267,11 @@ foreach ($propFile in $propsFiles) {
         if ($content -notmatch 'GHSA-rvv3-g6hj-g44x') {
             $suppressXml = @"
   <ItemGroup>
-    <!-- 压制已知第三方包的 NuGet 安全审计警告 (AutoMapper 14 与 SQLitePCLRaw) -->
+    <!-- 压制已知第三方包的 NuGet 安全审计警告 (AutoMapper 14 与 SQLitePCLRaw 与 SixLabors) -->
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rvv3-g6hj-g44x" />
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2cmq-823j-5qj8" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rxmq-m78w-7wmc" />
   </ItemGroup>
 "@
             $content = $content -replace '</Project>', "$suppressXml`n</Project>"
@@ -292,10 +306,28 @@ foreach ($cs in $allCsFiles) {
         $csText = $csText -replace 'OpenIddictConstants\.Permissions\.Endpoints\.Device(?!\w)', 'OpenIddictConstants.Permissions.Endpoints.DeviceAuthorization'
     }
 
+    # 适配 ABP 10 LanguageInfo 构造函数（移除已废弃的第 4 个参数）
+    # 例如：new LanguageInfo("hi", "hi", "Hindi", "in") -> new LanguageInfo("hi", "hi", "Hindi")
+    if ($csText -match 'new\s+LanguageInfo\s*\(\s*"[^"]+"\s*,\s*"[^"]+"\s*,\s*"[^"]+"\s*,\s*"[^"]+"\s*\)') {
+        $csText = [System.Text.RegularExpressions.Regex]::Replace(
+            $csText,
+            'new\s+LanguageInfo\s*\(\s*("[^"]+"\s*,\s*"[^"]+"\s*,\s*"[^"]+")\s*,\s*"[^"]+"\s*\)',
+            'new LanguageInfo($1)'
+        )
+    }
+
     # 通用清理无用多余的 using IdentityModel;（若移除后该文件并未引用任何 IdentityModel 类型）
     if ($csText -match 'using\s+IdentityModel;\r?\n?') {
         $strippedText = [System.Text.RegularExpressions.Regex]::Replace($csText, 'using\s+IdentityModel;\r?\n?', '')
         if ($strippedText -notmatch '\bIdentityModel\b') {
+            $csText = $strippedText
+        }
+    }
+
+    # 通用清理无用多余的 using DeviceDetectorNET.*;（若移除后该文件并未引用任何相关类型）
+    if ($csText -match 'using\s+DeviceDetectorNET[^;]*;\r?\n?') {
+        $strippedText = [System.Text.RegularExpressions.Regex]::Replace($csText, 'using\s+DeviceDetectorNET[^;]*;\r?\n?', '')
+        if ($strippedText -notmatch '\bDeviceDetector\b') {
             $csText = $strippedText
         }
     }
@@ -306,26 +338,59 @@ foreach ($cs in $allCsFiles) {
     }
 }
 
-# 2.3 更新所有 .csproj 文件
+# 2.3 清理 EF Core 10 下废弃的 SetPropertyCallsExtensions.cs（若其未被任何代码使用）
+$setPropertyExtFiles = Get-ChildItem -Path $ProjectsPath -Recurse -Filter "SetPropertyCallsExtensions.cs" -File -ErrorAction SilentlyContinue
+foreach ($extFile in $setPropertyExtFiles) {
+    $hasUsage = $false
+    foreach ($cs in $allCsFiles) {
+        if ($cs.FullName -ne $extFile.FullName) {
+            $c = Get-Content $cs.FullName -Raw -Encoding utf8 -ErrorAction SilentlyContinue
+            if ($c -match '\bSetPropertyIf\b') {
+                $hasUsage = $true
+                break
+            }
+        }
+    }
+    if (-not $hasUsage) {
+        Remove-Item $extFile.FullName -Force
+        Write-Host "  已清理废弃且未引用的 EF Core 扩展: $($extFile.Name)" -ForegroundColor Yellow
+    }
+}
+
+# 2.4 更新所有 .csproj 文件
 foreach ($proj in $csprojFiles) {
     $file = $proj.FullName
     $content = Get-Content $file -Raw -Encoding utf8
     $origContent = $content
 
     # 替换 TargetFramework / TargetFrameworks
-    $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFramework>.*?</TargetFramework>', "<TargetFramework>$TargetFramework</TargetFramework>")
-    $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFrameworks>.*?</TargetFrameworks>', "<TargetFrameworks>$TargetFramework</TargetFrameworks>")
+    # 对于可执行程序/Host/迁移工程，强制规范为单数 TargetFramework，防止 dotnet ef 报 MSB4057 "不存在目标 ResolvePackageAssets"
+    $isHostOrMigrator = ($proj.Name -match 'Host|AuthServer|DbMigrator|Web') -or (Test-Path (Join-Path $proj.DirectoryName "Migrations"))
+    if ($isHostOrMigrator) {
+        $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFrameworks>.*?</TargetFrameworks>', "<TargetFramework>$TargetFramework</TargetFramework>")
+        $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFramework>.*?</TargetFramework>', "<TargetFramework>$TargetFramework</TargetFramework>")
+    } else {
+        $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFramework>.*?</TargetFramework>', "<TargetFramework>$TargetFramework</TargetFramework>")
+        $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<TargetFrameworks>.*?</TargetFrameworks>', "<TargetFrameworks>$TargetFramework</TargetFrameworks>")
+    }
 
     # 替换 Version
     if ($content -match '<Version>') {
         $content = [System.Text.RegularExpressions.Regex]::Replace($content, '<Version>.*?</Version>', "<Version>$newVersion</Version>")
     }
 
-    # 替换 Volo.Abp.*
+    # 替换 Volo.Abp.* (排除具有独立版本周期的包，如 LeptonXLite)
     $content = [System.Text.RegularExpressions.Regex]::Replace(
         $content,
-        '(<PackageReference\s+Include="Volo\.Abp[^"]*"\s+Version=")[^"]*(")',
+        '(<PackageReference\s+Include="Volo\.Abp(?!\.AspNetCore\.Mvc\.UI\.Theme\.LeptonXLite)[^"]*"\s+Version=")[^"]*(")',
         "`${1}$AbpVersion`${2}"
+    )
+
+    # 针对 LeptonXLite，升级到与 ABP 10 兼容的 5.6.1 版本（或纠正误填的 10.x 版本）
+    $content = [System.Text.RegularExpressions.Regex]::Replace(
+        $content,
+        '(<PackageReference\s+Include="Volo\.Abp\.AspNetCore\.Mvc\.UI\.Theme\.LeptonXLite"\s+Version=")[^"]*(")',
+        "`${1}5.6.1`${2}"
     )
 
     # 替换 Microsoft.EntityFrameworkCore.*
@@ -348,6 +413,20 @@ foreach ($proj in $csprojFiles) {
         '(<PackageReference\s+Include="Microsoft\.Extensions[^"]*"\s+Version=")[^"]*(")',
         "`${1}$DotNetVersion`${2}"
     )
+
+    # 适配 Microsoft.IdentityModel.* 与 System.IdentityModel.Tokens.Jwt (ABP 10.6.1 + OpenIddict 7.5.0 要求 >= 8.16.0)
+    $content = [System.Text.RegularExpressions.Regex]::Replace(
+        $content,
+        '(<PackageReference\s+Include="(?:Microsoft\.IdentityModel|System\.IdentityModel\.Tokens\.Jwt)[^"]*"\s+Version=")(?:[1-7]\.|8\.[0-9]\.)[^"]*(")',
+        "`${1}8.16.0`${2}"
+    )
+
+    # 自动为测试客户端工程或依赖 Volo.Abp.Http.Client.IdentityModel 的工程补充 IdentityModel 7.0.0
+    if ($proj.Name -match 'ConsoleTestApp' -or ($content -match 'Volo\.Abp\.Http\.Client\.IdentityModel')) {
+        if ($content -notmatch '<PackageReference\s+Include="IdentityModel"') {
+            $content = $content -replace '(<PackageReference\s+Include="Volo\.Abp\.Http\.Client\.IdentityModel"[^>]*/>)', "`$1`n    <PackageReference Include=`"IdentityModel`" Version=`"7.0.0`" />"
+        }
+    }
 
     # 纠正 SixLabors.ImageSharp.Drawing 版本 (必须与 ABP 10.6.1 的 ImageSharp 3.x 对齐，Drawing 3.x 依赖 ImageSharp 4.x 且有破坏性改动和收费 License 检查)
     $content = [System.Text.RegularExpressions.Regex]::Replace(
@@ -389,7 +468,16 @@ if ($abpCmd) {
 # -------------------------------------------------------------------------
 Write-Host "`n[步骤 4/6] 还原项目依赖 (dotnet restore)..." -ForegroundColor Cyan
 Set-Location $ProjectsPath
-dotnet restore
+
+$slnTarget = $null
+$slnFiles = Get-ChildItem -Path $ProjectsPath -Filter *.sln -File
+if ($slnFiles.Count -gt 0) {
+    $slnTarget = $slnFiles[0].FullName
+    Write-Host "检测到解决方案文件: $($slnFiles[0].Name)，将针对解决方案执行还原与构建..." -ForegroundColor Gray
+    dotnet restore "`"$slnTarget`""
+} else {
+    dotnet restore
+}
 
 if ($LASTEXITCODE -ne 0) {
     Write-Error "dotnet restore 失败，请检查 NuGet 配置。"
@@ -402,7 +490,11 @@ Write-Host "依赖还原成功。" -ForegroundColor Green
 # -------------------------------------------------------------------------
 Write-Host "`n[步骤 5/6] 编译项目进行严格验证 (dotnet build)..." -ForegroundColor Cyan
 
-dotnet build --configuration Release --no-incremental
+if ($slnTarget) {
+    dotnet build "`"$slnTarget`"" --configuration Release --no-incremental
+} else {
+    dotnet build --configuration Release --no-incremental
+}
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "`n==========================================================" -ForegroundColor Red
@@ -426,18 +518,19 @@ Write-Host "已按要求停止自动迁移，以下是各工程的人工执行�
 if ($candidateMigrationProjects.Count -gt 0) {
     for ($i = 0; $i -lt $candidateMigrationProjects.Count; $i++) {
         $targetProject = $candidateMigrationProjects[$i]
+        $fullDir = $targetProject.DirectoryName
         $relPath = Resolve-Path -Path $targetProject.DirectoryName -Relative
 
         Write-Host "----------------------------------------------------------" -ForegroundColor DarkCyan
         Write-Host " [工程 $($i + 1)] $($targetProject.Name)" -ForegroundColor Cyan
-        Write-Host " 目录: $relPath" -ForegroundColor Gray
+        Write-Host " 目录: $fullDir" -ForegroundColor Gray
         Write-Host "----------------------------------------------------------" -ForegroundColor DarkCyan
 
         if ($targetProject.Name -match 'DbMigrator') {
-            Write-Host "cd `"$relPath`"" -ForegroundColor White
+            Write-Host "cd `"$fullDir`"" -ForegroundColor White
             Write-Host "dotnet run`n" -ForegroundColor White
         } else {
-            Write-Host "cd `"$relPath`"" -ForegroundColor White
+            Write-Host "cd `"$fullDir`"" -ForegroundColor White
             Write-Host "dotnet ef migrations add $MigrationName" -ForegroundColor White
             Write-Host "dotnet ef database update`n" -ForegroundColor White
         }

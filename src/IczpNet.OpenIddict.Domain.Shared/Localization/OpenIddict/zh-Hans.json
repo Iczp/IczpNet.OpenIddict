@@ -19,6 +19,7 @@
     "Permission:OpenIddict.ApplicationPermissions.GetClientSecret": "查看密钥",
     "Permission:OpenIddict.ApplicationPermissions.SetClientSecret": "修改密钥",
     "Permission:OpenIddict.ApplicationPermissions.ValidateClientSecret": "验证密钥",
+    "Permission:OpenIddict.ApplicationPermissions.ManagePermissions": "权限分配",
 
     "Permission:OpenIddict.ScopePermissions": "作用域(范围)",
     "Permission:OpenIddict.ScopePermissions.GetItem": "查看",
@@ -31,6 +32,7 @@
     "Permission:OpenIddict.TokenPermissions.GetItem": "查看",
     "Permission:OpenIddict.TokenPermissions.GetList": "列表",
     "Permission:OpenIddict.TokenPermissions.Delete": "删除",
+    "Permission:OpenIddict.TokenPermissions.Revoke": "吊销",
     "Permission:OpenIddict.TokenPermissions.GetStatusList": "状态列表",
     "Permission:OpenIddict.TokenPermissions.GetTypeList": "应用类型列表",
     "Permission:OpenIddict.TokenPermissions.GetApplicationIdList": "AppId列表",
@@ -38,7 +40,8 @@
     "Permission:OpenIddict.AuthorizationPermissions": "授权",
     "Permission:OpenIddict.AuthorizationPermissions.GetItem": "查看",
     "Permission:OpenIddict.AuthorizationPermissions.GetList": "列表",
-    "Permission:OpenIddict.AuthorizationPermissions.Delete": "删除"
+    "Permission:OpenIddict.AuthorizationPermissions.Delete": "删除",
+    "Permission:OpenIddict.AuthorizationPermissions.Revoke": "吊销"
 
   }
 }

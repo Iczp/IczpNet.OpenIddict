@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons.Dtos;
+using IczpNet.AbpCommons.Dtos;
 using IczpNet.OpenIddict.BaseAppServices;
 using IczpNet.OpenIddict.Permissions;
 using IczpNet.OpenIddict.Tokens.Dtos;
@@ -101,4 +101,57 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// 主动吊销单个令牌
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    public virtual async Task RevokeAsync(Guid id)
+    {
+        await CheckPolicyAsync(OpenIddictPermissions.TokenPermissions.Revoke);
+
+        var token = await TokenManager.FindByIdAsync(id.ToString());
+        if (token == null)
+        {
+            throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(OpenIddictToken), id);
+        }
+
+        await TokenManager.TryRevokeAsync(token);
+    }
+
+    /// <summary>
+    /// 按用户吊销其所有令牌（强制下线）
+    /// </summary>
+    /// <param name="subject"></param>
+    /// <returns></returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    public virtual async Task RevokeBySubjectAsync(string subject)
+    {
+        await CheckPolicyAsync(OpenIddictPermissions.TokenPermissions.Revoke);
+        Check.NotNullOrWhiteSpace(subject, nameof(subject));
+
+        await TokenManager.RevokeBySubjectAsync(subject);
+    }
+
+    /// <summary>
+    /// 批量吊销令牌
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    public virtual async Task RevokeManyAsync(List<Guid> ids)
+    {
+        await CheckPolicyAsync(OpenIddictPermissions.TokenPermissions.Revoke);
+        Check.NotNullOrEmpty(ids, nameof(ids));
+
+        foreach (var id in ids)
+        {
+            var token = await TokenManager.FindByIdAsync(id.ToString());
+            if (token != null)
+            {
+                await TokenManager.TryRevokeAsync(token);
+            }
+        }
+    }
 }

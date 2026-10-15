@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,6 +75,16 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
 
         await CheckCreateAsync(input);
 
+        var settings = new ApplicationSettingsDto
+        {
+            AccessTokenLifetime = input.AccessTokenLifetime,
+            IdentityTokenLifetime = input.IdentityTokenLifetime,
+            RefreshTokenLifetime = input.RefreshTokenLifetime,
+            AuthorizationCodeLifetime = input.AuthorizationCodeLifetime,
+            DeviceCodeLifetime = input.DeviceCodeLifetime,
+            AllowedCorsOrigins = input.AllowedCorsOrigins ?? new List<string>()
+        };
+
         var application = await ApplicationManager.CreateAsync(
              name: input.ClientId,
              type: input.ClientType,
@@ -87,7 +97,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
              postLogoutRedirectUris: input.PostLogoutRedirectUris,
              clientUri: input.ClientUri,
              logoUri: input.LogoUri,
-             permissions: input.Permissions);
+             permissions: input.Permissions,
+             settings: settings);
 
         var entity = await GetEntityByIdAsync(application.Id);
 
@@ -106,6 +117,16 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
 
         var application = (await ApplicationManager.FindByIdAsync(id.ToString())).As<OpenIddictApplicationModel>();
 
+        var settings = new ApplicationSettingsDto
+        {
+            AccessTokenLifetime = input.AccessTokenLifetime,
+            IdentityTokenLifetime = input.IdentityTokenLifetime,
+            RefreshTokenLifetime = input.RefreshTokenLifetime,
+            AuthorizationCodeLifetime = input.AuthorizationCodeLifetime,
+            DeviceCodeLifetime = input.DeviceCodeLifetime,
+            AllowedCorsOrigins = input.AllowedCorsOrigins ?? new List<string>()
+        };
+
         await ApplicationManager.UpdateAsync(
             application,
             type: input.ClientType,
@@ -118,7 +139,8 @@ public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplicat
             postLogoutRedirectUris: input.PostLogoutRedirectUris,
             clientUri: input.ClientUri,
             logoUri: input.LogoUri,
-            permissions: input.Permissions
+            permissions: input.Permissions,
+            settings: settings
             );
 
         var entity = await GetEntityByIdAsync(application.Id);

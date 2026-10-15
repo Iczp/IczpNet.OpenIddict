@@ -1,4 +1,4 @@
-﻿using Volo.Abp.Reflection;
+using Volo.Abp.Reflection;
 
 namespace IczpNet.OpenIddict.Permissions;
 
@@ -26,6 +26,7 @@ public class OpenIddictPermissions
         public const string GetClientSecret = Default + "." + nameof(GetClientSecret);
         public const string SetClientSecret = Default + "." + nameof(SetClientSecret);
         public const string ValidateClientSecret = Default + "." + nameof(ValidateClientSecret);
+        public const string ManagePermissions = Default + "." + nameof(ManagePermissions);
     }
 
 
@@ -47,6 +48,7 @@ public class OpenIddictPermissions
         public const string GetItem = Default + "." + nameof(GetItem);
         public const string GetList = Default + "." + nameof(GetList);
         public const string Delete = Default + "." + nameof(Delete);
+        public const string Revoke = Default + "." + nameof(Revoke);
         //public const string Update = Default + "." + nameof(Update);
         //public const string Create = Default + "." + nameof(Create);
         public const string GetStatusList = Default + "." + nameof(GetStatusList);
@@ -60,6 +62,7 @@ public class OpenIddictPermissions
         public const string GetItem = Default + "." + nameof(GetItem);
         public const string GetList = Default + "." + nameof(GetList);
         public const string Delete = Default + "." + nameof(Delete);
+        public const string Revoke = Default + "." + nameof(Revoke);
         //public const string Update = Default + "." + nameof(Update);
         //public const string Create = Default + "." + nameof(Create);
     }

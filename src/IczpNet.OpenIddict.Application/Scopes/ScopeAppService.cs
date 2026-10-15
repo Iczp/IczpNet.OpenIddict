@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,7 +57,9 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
         var application = await ScopeManager.CreateAsync(
              name: input.Name,
              displayName: input.DisplayName,
-             resources: input.Resources);
+             resources: input.Resources,
+             description: input.Description,
+             claims: input.Claims);
 
         var entity = await GetEntityByIdAsync(application.Id);
 
@@ -67,7 +69,19 @@ public class ScopeAppService : CrudOpenIddictAppService<OpenIddictScope, ScopeDe
     //[HttpPost]
     public override async Task<ScopeDetailDto> UpdateAsync(Guid id, ScopeUpdateInput input)
     {
-        return await base.UpdateAsync(id, input);
+        await CheckUpdatePolicyAsync(id, input);
+
+        var scope = await ScopeManager.UpdateAsync(
+            identifier: id,
+            name: input.Name,
+            displayName: input.DisplayName,
+            resources: input.Resources,
+            description: input.Description,
+            claims: input.Claims);
+
+        var entity = await GetEntityByIdAsync(scope.Id);
+
+        return await MapToGetOutputDtoAsync(entity);
     }
 
     //[HttpGet]

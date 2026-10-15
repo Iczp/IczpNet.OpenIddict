@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons.Utils;
+using IczpNet.AbpCommons.Utils;
 using IczpNet.OpenIddict.Localization;
 using IczpNet.OpenIddict.Permissions;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +82,11 @@ public class ConstsAppService : ApplicationService
     public virtual Task<Dictionary<string, string>> GetScopesAsync()
     {
         return Task.FromResult(GetFields(typeof(OpenIddictConstants.Scopes)));
+    }
+
+    public virtual Task<Dictionary<string, string>> GetClaimsAsync()
+    {
+        return Task.FromResult(GetFields(typeof(OpenIddictConstants.Claims)));
     }
 
     private static Dictionary<string, string> GetFields(Type type)

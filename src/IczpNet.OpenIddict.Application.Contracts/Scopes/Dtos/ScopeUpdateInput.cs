@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace IczpNet.OpenIddict.Scopes.Dtos;
@@ -26,4 +26,9 @@ public class ScopeUpdateInput
     /// current scope, serialized as a JSON array.
     /// </summary>
     public virtual List<string> Resources { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the claims associated with the current scope.
+    /// </summary>
+    public virtual List<string> Claims { get; set; } = [];
 }

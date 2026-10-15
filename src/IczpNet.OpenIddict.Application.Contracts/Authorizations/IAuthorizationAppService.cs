@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons;
+using IczpNet.AbpCommons;
 using IczpNet.OpenIddict.Authorizations.Dtos;
 using IczpNet.AbpCommons.Dtos;
 using System;
@@ -14,4 +14,17 @@ public interface IAuthorizationAppService :ICrudAbpCommonsAppService<Authorizati
 
     Task<PagedResultDto<KeyValueDto<Guid?>>> GetApplicationIdListAsync(AuthorizationApplicationIdGetListInput input);
 
+    /// <summary>
+    /// 主动吊销授权（并级联吊销关联的令牌）
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task RevokeAsync(Guid id);
+
+    /// <summary>
+    /// 批量吊销授权
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns></returns>
+    Task RevokeManyAsync(System.Collections.Generic.List<Guid> ids);
 }

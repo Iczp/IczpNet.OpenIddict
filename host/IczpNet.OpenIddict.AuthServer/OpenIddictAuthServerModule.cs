@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -187,6 +187,8 @@ public class OpenIddictAuthServerModule : AbpModule
                     .AllowCredentials();
             });
         });
+
+        context.Services.AddTransient<Microsoft.AspNetCore.Cors.Infrastructure.ICorsPolicyProvider, IczpNet.OpenIddict.OpenIddict.OpenIddictDynamicCorsPolicyProvider>();
 
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());

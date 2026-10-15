@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -25,35 +25,39 @@ public interface IApplicationManager : IAbpApplicationManager, ITransientDepende
        List<string> postLogoutRedirectUris = null,
        string clientUri = null,
        string logoUri = null,
-       List<string> permissions = null, CancellationToken cancellationToken = default);
+       List<string> permissions = null,
+       ApplicationSettingsDto settings = null,
+       CancellationToken cancellationToken = default);
 
     ValueTask<OpenIddictApplicationModel> UpdateAsync(
-    [NotNull] Guid identifier,
-    [NotNull] string type,
-    [NotNull] string consentType,
-    string displayName,
-    string secret,
-    List<string> grantTypes,
-    List<string> scopes,
-    List<string> redirectUris = null,
-    List<string> postLogoutRedirectUris = null,
-    string clientUri = null,
-    string logoUri = null,
-    List<string> permissions = null,
-    CancellationToken cancellationToken = default);
+        [NotNull] Guid identifier,
+        [NotNull] string type,
+        [NotNull] string consentType,
+        string displayName,
+        string secret,
+        List<string> grantTypes,
+        List<string> scopes,
+        List<string> redirectUris = null,
+        List<string> postLogoutRedirectUris = null,
+        string clientUri = null,
+        string logoUri = null,
+        List<string> permissions = null,
+        ApplicationSettingsDto settings = null,
+        CancellationToken cancellationToken = default);
 
     ValueTask<OpenIddictApplicationModel> UpdateAsync(
-    OpenIddictApplicationModel applcation,
-    [NotNull] string type,
-    [NotNull] string consentType,
-    string displayName,
-    string secret,
-    List<string> grantTypes,
-    List<string> scopes,
-    List<string> redirectUris = null,
-    List<string> postLogoutRedirectUris = null,
-    string clientUri = null,
-    string logoUri = null,
-    List<string> permissions = null,
-    CancellationToken cancellationToken = default);
+        OpenIddictApplicationModel applcation,
+        [NotNull] string type,
+        [NotNull] string consentType,
+        string displayName,
+        string secret,
+        List<string> grantTypes,
+        List<string> scopes,
+        List<string> redirectUris = null,
+        List<string> postLogoutRedirectUris = null,
+        string clientUri = null,
+        string logoUri = null,
+        List<string> permissions = null,
+        ApplicationSettingsDto settings = null,
+        CancellationToken cancellationToken = default);
 }
