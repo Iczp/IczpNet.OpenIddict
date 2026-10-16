@@ -27,11 +27,16 @@ public class OpenIddictPermissions
         public const string SetClientSecret = Default + "." + nameof(SetClientSecret);
         public const string ValidateClientSecret = Default + "." + nameof(ValidateClientSecret);
         public const string ManagePermissions = Default + "." + nameof(ManagePermissions);
+    }
 
-        /// <summary>
-        /// 对齐 ABP 官方原生 Client 权限提供者 ('C') 默认检测的 Policy 名称
-        /// </summary>
-        public const string OpenIddictProManagePermissions = "OpenIddictPro.Application.ManagePermissions";
+    public class OpenIddictProPermissions
+    {
+        public const string GroupName = "OpenIddictPro";
+
+        public class Application
+        {
+            public const string ManagePermissions = GroupName + "." + nameof(Application) + "." + nameof(ManagePermissions);
+        }
     }
 
 
