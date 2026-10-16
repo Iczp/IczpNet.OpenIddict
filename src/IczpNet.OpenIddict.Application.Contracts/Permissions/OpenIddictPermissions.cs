@@ -29,15 +29,6 @@ public class OpenIddictPermissions
         public const string ManagePermissions = Default + "." + nameof(ManagePermissions);
     }
 
-    public class OpenIddictProPermissions
-    {
-        public const string GroupName = "OpenIddictPro";
-
-        public class Application
-        {
-            public const string ManagePermissions = GroupName + "." + nameof(Application) + "." + nameof(ManagePermissions);
-        }
-    }
 
 
     
@@ -75,5 +66,15 @@ public class OpenIddictPermissions
         public const string Revoke = Default + "." + nameof(Revoke);
         //public const string Update = Default + "." + nameof(Update);
         //public const string Create = Default + "." + nameof(Create);
+    }
+}
+
+public class OpenIddictProPermissions
+{
+    public const string GroupName = "OpenIddictPro";
+
+    public class Application
+    {
+        public const string ManagePermissions = GroupName + "." + nameof(Application) + "." + nameof(ManagePermissions);
     }
 }
