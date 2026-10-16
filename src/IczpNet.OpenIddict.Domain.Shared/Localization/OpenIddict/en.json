@@ -16,6 +16,7 @@
     "Permission:OpenIddict.ApplicationPermissions.SetClientSecret": "Set Client Secret",
     "Permission:OpenIddict.ApplicationPermissions.ValidateClientSecret": "Validate Client Secret",
     "Permission:OpenIddict.ApplicationPermissions.ManagePermissions": "Manage Permissions",
+    "Permission:OpenIddictPro.Application.ManagePermissions": "Manage Permissions",
 
     "Permission:OpenIddict.ScopePermissions": "Scope",
     "Permission:OpenIddict.ScopePermissions.GetItem": "GetItem",

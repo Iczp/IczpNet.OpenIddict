@@ -1,4 +1,4 @@
-﻿using IczpNet.AbpCommons.Permissions;
+using IczpNet.AbpCommons.Permissions;
 using IczpNet.OpenIddict.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
@@ -13,6 +13,14 @@ public class OpenIddictPermissionDefinitionProvider : PermissionDefinitionProvid
 
         myGroup.AddPermissions<OpenIddictPermissions>(x => L($"Permission:{x}"));
 
+        // 对齐 ABP 官方原生 Client 权限提供者 ('C') 默认检测的 Policy 名称: OpenIddictPro.Application.ManagePermissions
+        var proGroup = context.GetGroupOrNull("OpenIddictPro") ?? context.AddGroup("OpenIddictPro", L("Permission:OpenIddict"));
+        if (proGroup.GetPermissionOrNull(OpenIddictPermissions.ApplicationPermissions.OpenIddictProManagePermissions) == null)
+        {
+            proGroup.AddPermission(
+                OpenIddictPermissions.ApplicationPermissions.OpenIddictProManagePermissions,
+                L("Permission:OpenIddictPro.Application.ManagePermissions"));
+        }
     }
 
     private static LocalizableString L(string name)

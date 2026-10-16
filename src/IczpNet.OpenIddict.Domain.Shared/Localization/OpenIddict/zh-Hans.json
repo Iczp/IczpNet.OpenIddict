@@ -20,6 +20,7 @@
     "Permission:OpenIddict.ApplicationPermissions.SetClientSecret": "修改密钥",
     "Permission:OpenIddict.ApplicationPermissions.ValidateClientSecret": "验证密钥",
     "Permission:OpenIddict.ApplicationPermissions.ManagePermissions": "权限分配",
+    "Permission:OpenIddictPro.Application.ManagePermissions": "客户端权限管理",
 
     "Permission:OpenIddict.ScopePermissions": "作用域(范围)",
     "Permission:OpenIddict.ScopePermissions.GetItem": "查看",
