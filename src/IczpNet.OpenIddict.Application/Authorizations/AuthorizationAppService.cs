@@ -16,6 +16,13 @@ namespace IczpNet.OpenIddict.Authorizations;
 
 public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAuthorization, AuthorizationDetailDto, AuthorizationDto, Guid, AuthorizationGetListInput>, IAuthorizationAppService
 {
+    protected override async Task CheckDeleteAsync(OpenIddictAuthorization entity)
+    {
+        await base.CheckDeleteAsync(entity);
+        if (await LazyServiceProvider.LazyGetRequiredService<IczpNet.OpenIddict.Tokens.ITokenRevocationRepository>()
+            .HasUnexpiredTokensAsync(authorizationId: entity.Id))
+            throw new Volo.Abp.UserFriendlyException("该授权仍关联未过期令牌。请撤销授权，保留记录直到令牌过期。");
+    }
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.GetList;
     protected override string GetPolicyName { get; set; } = OpenIddictPermissions.AuthorizationPermissions.GetItem;
@@ -93,7 +100,8 @@ public class AuthorizationAppService : GetListOpenIddictAppService<OpenIddictAut
             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(OpenIddictAuthorization), id);
         }
 
-        await AuthorizationManager.TryRevokeAsync(auth);
+        if (!await AuthorizationManager.TryRevokeAsync(auth))
+            throw new Volo.Abp.AbpException("Authorization revocation failed. Retry the operation.");
 
         // 级联吊销关联的令牌
         await TokenManager.RevokeByAuthorizationIdAsync(id.ToString());

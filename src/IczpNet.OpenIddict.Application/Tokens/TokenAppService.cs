@@ -26,6 +26,13 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
 
     protected ITokenManager TokenManager { get; set; }
 
+    protected override async Task CheckDeleteAsync(OpenIddictToken entity)
+    {
+        await base.CheckDeleteAsync(entity);
+        if (!entity.ExpirationDate.HasValue || entity.ExpirationDate >= DateTime.UtcNow.AddMinutes(-5))
+            throw new UserFriendlyException("未过期令牌必须保留撤销记录。请先撤销，过期后再清理。");
+    }
+
     public TokenAppService(
         IRepository<OpenIddictToken, Guid> repository,
         ITokenManager tokenManager) : base(repository)
@@ -117,7 +124,8 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
             throw new Volo.Abp.Domain.Entities.EntityNotFoundException(typeof(OpenIddictToken), id);
         }
 
-        await TokenManager.TryRevokeAsync(token);
+        if (!await TokenManager.TryRevokeAsync(token))
+            throw new AbpException("Token revocation failed. Retry the operation.");
     }
 
     /// <summary>
@@ -150,7 +158,8 @@ public class TokenAppService : CrudOpenIddictAppService<OpenIddictToken, TokenDe
             var token = await TokenManager.FindByIdAsync(id.ToString());
             if (token != null)
             {
-                await TokenManager.TryRevokeAsync(token);
+                if (!await TokenManager.TryRevokeAsync(token))
+                    throw new AbpException("Token revocation failed. Retry the operation.");
             }
         }
     }

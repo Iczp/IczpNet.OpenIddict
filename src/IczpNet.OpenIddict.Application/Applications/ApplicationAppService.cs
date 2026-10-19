@@ -20,6 +20,13 @@ namespace IczpNet.OpenIddict.Applications;
 
 public class ApplicationAppService : CrudOpenIddictAppService<OpenIddictApplication, ApplicationDetailDto, ApplicationDto, Guid, ApplicationGetListInput, ApplicationCreateInput, ApplicationUpdateInput>, IApplicationAppService
 {
+    protected override async Task CheckDeleteAsync(OpenIddictApplication entity)
+    {
+        await base.CheckDeleteAsync(entity);
+        if (await LazyServiceProvider.LazyGetRequiredService<IczpNet.OpenIddict.Tokens.ITokenRevocationRepository>()
+            .HasUnexpiredTokensAsync(applicationId: entity.Id))
+            throw new UserFriendlyException("该客户端仍有关联的未过期令牌，请先撤销并保留记录直到令牌过期。");
+    }
 
     protected override string GetListPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetList;
     protected override string GetPolicyName { get; set; } = OpenIddictPermissions.ApplicationPermissions.GetItem;

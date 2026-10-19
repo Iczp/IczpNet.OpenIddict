@@ -4,6 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Volo.Abp.OpenIddict.Tokens;
+using Volo.Abp.OpenIddict.Authorizations;
+using IczpNet.OpenIddict.Tokens;
 
 namespace IczpNet.OpenIddict.EntityFrameworkCore;
 
@@ -17,6 +21,9 @@ public class OpenIddictEntityFrameworkCoreModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        context.Services.Replace(ServiceDescriptor.Transient<IOpenIddictTokenRepository, RevocationTokenRepository>());
+        context.Services.Replace(ServiceDescriptor.Transient<IOpenIddictAuthorizationRepository, RevocationAuthorizationRepository>());
+        context.Services.AddTransient<ITokenRevocationRepository, RevocationTokenRepository>();
         context.Services.AddAbpDbContext<OpenIddictDbContext>(options =>
         {
             /* Add custom repositories here. Example:
